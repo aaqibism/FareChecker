@@ -1,0 +1,154 @@
+@charset "ISO-8859-1";
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:700');
+
+html,body {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+.nav {
+	background-color: #292520;
+	color: white;
+	font-size: 20px;
+}
+
+.jumbo {
+	background-size: cover;
+	background-position: center;
+	color: aliceblue;
+	height: 300px;
+	background-image: linear-gradient(to bottom, rgba(112, 119, 158, 0.68), rgba(57, 19, 117, 0.93)), url('share.jpg');
+}
+
+.jumbotron h1 {
+	font-family: 'Raleway', sans-serif;
+}
+
+.jumbotron p {
+	text-align: center;
+	font-family: 'Barlow', sans-serif;
+
+}
+
+.danger {
+	display: none;
+	text-align: center;
+	color: #ff2626;
+	font-family: monospace;
+}
+
+.danger1 {
+	display: none;
+	text-align: center;
+	color: #670374;
+	font-family: monospace;
+}
+
+#map {
+	height: 500px;
+	margin: 5%;
+}
+
+#directions {
+	display: flex;
+}
+
+#locationField, #locationField2 {
+    position: relative;
+    width: 480px;
+}
+
+#startAdd, #endAdd {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	width: 100%;
+}
+
+.test, .test1 {
+	padding: 20px 10px 20px 10px;
+	font-size: 22px;
+	color: #fff;
+	width: 100%;
+	display: flex;
+	height: 250px;
+}
+
+.test1 {
+	background-color: #913d88;
+}
+
+.test {
+	background-color: #c72424;
+}
+
+.label {
+	margin-top: 5px;
+}
+
+.label1 {
+	margin-top: 35px;
+}
+
+
+.cntr {
+	display: table;
+	width: 100%;
+	height: 100%;
+}
+.cntr .cntr-innr {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+}
+.search {
+	display: inline-block;
+	position: relative;
+	height: 50px;
+	width: 50px;
+	margin: 10px 8px 7px 0px;
+	padding: 7px 9px 0px 9px;
+	border: 3px solid #fff;
+	border-radius: 25px;
+	transition: all 200ms ease;
+	cursor: text;
+}
+.search:after {
+	content: "";
+	position: absolute;
+	width: 3px;
+	height: 25px;
+	right: -7px;
+	top: 35px;
+	background: #fff;
+	border-radius: 3px;
+	transform: rotate(-45deg);
+	transition: all 200ms ease;
+}
+.search.active, .search:hover {
+	width: 300px;
+	margin-right: 0px;
+}
+.search.active:after, .search:hover:after {
+	height: 0px;
+}
+.search input {
+	width: 100%;
+	border: 0px;
+	box-sizing: border-box;
+	font-family: Helvetica;
+	font-size: 20px;
+	color: inherit;
+	background: transparent;
+	outline-width: 0px;
+	padding-right: 20px;
+}
+
+@media (max-width: 992px)
+{
+
+	#directions {
+		flex-direction: column;
+	}
+}
