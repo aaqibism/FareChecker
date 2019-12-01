@@ -38,7 +38,7 @@ public class getLocation extends HttpServlet {
 		Double startlng= Double.parseDouble(request.getParameter("startlng"));
 		String name= request.getParameter("name");
 		HttpSession h= request.getSession();
-		String usern="hassib"; //(String)h.getAttribute("usern");//must be done in login and register servlet*********
+		String usern="hassib"; //(String)h.getAttribute("username");//must be done in login and register servlet*********
 		
 		Connection conn = null;
 		PreparedStatement  st= null;
