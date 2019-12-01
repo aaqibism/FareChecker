@@ -102,7 +102,7 @@ document.querySelector("#favoriteform").onsubmit = function (event) {
 		var xhttp= new XMLHttpRequest();
 
 		xhttp.open("GET", "addfav?lat=" + markersec.position.lat()+
-				"&lng=" +  markersec.position.lng()+"&name="+name+"&top="+button, false);
+				"&lng=" +  markersec.position.lng()+"&name="+name, false);
 		
 		xhttp.send();	
 		return true;
@@ -130,10 +130,11 @@ document.querySelector("#favoriteform").onsubmit = function (event) {
 	
 }
 document.querySelector("#enterfavorite").onsubmit = function (event) {
-
+	//event.preventDefault(); //REMOVE THIS TO SUBMIT
 	let secondaddd = document.getElementById('startAdd').value;
 	if( secondaddd.length > 0)
 	{
+		console.log("MADEIT");
 	geocoder.geocode( { 'address': secondaddd}, function(results, status) {
 	if (status == 'OK') {
 	let markersec = new google.maps.Marker({
@@ -141,36 +142,76 @@ document.querySelector("#enterfavorite").onsubmit = function (event) {
 	position: results[0].geometry.location
 	});
 	mymap.panTo(markersec.position);
-	document.querySelector("#startflat").value = markersec.position.lat();
-	document.querySelector("#startflng").value = markersec.position.lng();
-	console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
+	startinglat = markersec.position.lat();
+	startinglng= markersec.position.lng();
+	console.log("STARTINGHERE: "+ markersec.position.lat() + " " + markersec.position.lng());
+	let favaddentered= document.getElementById('enterfavresult').value;
+	if(favaddentered.length > 0)
+	{
+		console.log("STARTING3: "+ startinglat + " " + startinglng);
+		var xhttp= new XMLHttpRequest();
+		let nameoffavorite=document.getElementById('enterfavresult').value;
+		xhttp.open("GET", "getLocation?name=" +nameoffavorite+"&startlat="+startinglat+
+				"&startlng="+startinglng, false);
+		xhttp.send();
+		
+		
+		//if successful set it as ending lat and lng and redirect to details.jsp else return error message
+		if (xhttp.responseText.trim().length > 23) {	
+			document.getElementById("errorFav").innerHTML= xhttp.responseText;
+			
+			return false;
+		}
+		else 
+		{
+			return true;
+		}
+	}
+	else
+	{
+		document.getElementById("errorFav").innerHTML='<p style="color:red"> Please enter a name</p>';
+		return false;
+		
+	}
 	} 
 	});
-	} else {
-	document.querySelector("#startflat").value = startinglat;
-	document.querySelector("#startflng").value = startinglng;
-	console.log("STARTING: "+ startinglat + " " + startinglng);
+	} 
+	else
+	{
+		let favaddentered2= document.getElementById('enterfavresult').value;
+		if(favaddentered2.length > 0)
+		{
+			console.log("STARTING3: "+ startinglat + " " + startinglng);
+			var xhttp= new XMLHttpRequest();
+			let nameoffavorite=document.getElementById('enterfavresult').value;
+			xhttp.open("GET", "getLocation?name=" +nameoffavorite+"&startlat="+startinglat+
+					"&startlng="+startinglng, false);
+			xhttp.send();
+			
+			
+			//if successful set it as ending lat and lng and redirect to details.jsp else return error message
+			if (xhttp.responseText.trim().length > 23) {	
+				document.getElementById("errorFav").innerHTML= xhttp.responseText;
+				
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		else
+		{
+			document.getElementById("errorFav").innerHTML='<p style="color:red"> Please enter a name</p>';
+			return false;
+			
+		}
+		
+		
 	}
-	
 	
 	//get fav lat and lng from database
-	var xhttp= new XMLHttpRequest();
-	let nameoffavorite=document.getElementById('enterfavresult').value;
-	xhttp.open("GET", "getLocation?name=" +nameoffavorite+"&startlat="+document.querySelector("#startflat").value+
-			"&startlng="+document.querySelector("#startflng").value, false);
-	xhttp.send();
 	
-	
-	//if successful set it as ending lat and lng and redirect to details.jsp else return error message
-	if (xhttp.responseText.trim().length > 23) {	
-		document.getElementById("errorFav").innerHTML= xhttp.responseText;
-		
-		return false;
-	}
-	else if(xhttp.responseText.trim().value="Served at: /fareChecker")
-	{
-		return true;
-	}
 
 	
 }
