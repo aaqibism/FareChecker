@@ -53,9 +53,9 @@
 	<div id="errorFav"></div>
 	<form name="myform" action="details.jsp" id="enterfavorite" class="form-inline" method="get">
 
-		   <input type="text"  style="position:relative; height:39px;left:450px; top:10px; width:350px;" id="enterfavresult" placeholder="Have a favorite saved? Enter name.">
+		   <input type="text"  style="position:relative; height:39px;left:30px; top:10px; width:350px;" id="enterfavresult" placeholder="Have a favorite saved? Enter name.">
 
-			<input type="submit" style="position:relative; right:-470px;  top:10px;" id="submitfav" value="Find favorite"> 
+			<input type="submit" style="position:relative; left:50px;  top:10px;" id="submitfav" value="Find favorite"> 
 		
 			<input type="hidden" id="startflat" value="">
 			<input type="hidden" id="startflng" value="">
@@ -89,15 +89,7 @@
 					</div>
 			
 		   		 <input type="text"  style="position:relative; height:39px;left:60px; top:10px; width:350px;" id="nameoffav" placeholder="What is the name of your favorite location?">
-		  		 <div class="btn-group" style="position:relative; left:60px; top:10px;" data-toggle="buttons">
-							  <label class="btn btn-primary active">
-							    <input type="radio" name="topornot" id="option1" checked value="Set as top 3 favorites"> Set as top 3 favorites
-							  </label>
-							  <label class="btn btn-primary">
-							    <input type="radio" name="topornot" id="option2" value ="Set as normal favorites" > Set as normal favorites
-							  </label>
-							 
-			    </div>
+		  		 
 		  		
 			</div>
 			
