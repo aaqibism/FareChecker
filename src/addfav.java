@@ -36,7 +36,7 @@ public class addfav extends HttpServlet {
 		String name= request.getParameter("name");
 		System.out.println("Lat: "+ lat+ " , lng: "+ lng+" , btn: "+btn+" , name: "+name);
 		HttpSession h= request.getSession();
-		String usern=(String) h.getAttribute("username");//this has to be set in login or register jsp
+		String usern="hassib";//(String) h.getAttribute("username");//this has to be set in login or register jsp
 
 		
 		 Connection conn = null;
