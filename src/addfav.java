@@ -32,9 +32,8 @@ public class addfav extends HttpServlet {
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		double lat =Double.parseDouble(request.getParameter("lat"));
 		double lng= Double.parseDouble(request.getParameter("lng"));
-		String btn= request.getParameter("top");
 		String name= request.getParameter("name");
-		System.out.println("Lat: "+ lat+ " , lng: "+ lng+" , btn: "+btn+" , name: "+name);
+		System.out.println("Lat: "+ lat+ " , lng: "+ lng+ " name: "+name);
 		HttpSession h= request.getSession();
 		String usern="hassib";//(String) h.getAttribute("username");//this has to be set in login or register jsp
 
