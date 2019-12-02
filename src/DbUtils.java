@@ -32,6 +32,11 @@ public class DbUtils {
     	try {
     		Class.forName("com.mysql.jdbc.Driver");
     		connection = DriverManager.getConnection(CREDENTIAL_STRING);
+    		if (connection.isClosed()) {
+    			System.out.println("Closed");
+    		} else {
+    			System.out.println("Open");
+    		}
     	} catch (ClassNotFoundException | SQLException e) {
     		e.printStackTrace();
     	}

@@ -145,6 +145,51 @@ html,body {
 	padding-right: 20px;
 }
 
+#table {
+	width: 80%;
+	margin-left: 10%;
+	margin-right: 10%;
+}
+
+#favorite {
+	text-align: center;
+}
+
+#favorite:hover, #plus:hover, td {
+	cursor: pointer;
+}
+
+#favoriteform {
+	margin-left:10%; 
+	margin-right:10%; 
+	margin-bottom:3%;
+	display: none;
+}
+
+#favoriteform input {
+	margin-bottom: 2%;
+}
+
+#favoriteform button {
+	margin-left: 46%;
+	/*margin-right: 47%;*/
+}
+
+#plus {
+	margin-left: 10%;
+	margin-right:10%;
+	margin-bottom: 3%;
+	border: 1px solid grey;
+	padding: 10px 15px 10px 15px;
+	display: flex;
+}
+
+#plus i, #plus h6 {
+	margin: 1%;
+}
+
+
+
 @media (max-width: 992px)
 {
 

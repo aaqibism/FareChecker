@@ -74,7 +74,7 @@ userinfo.open(mymap);
 }
 
 //should get cord. of final destination based on user input for adrs 
-document.querySelector("#favoriteform").onsubmit = function (event) {
+/*document.querySelector("#favoriteform").onsubmit = function (event) {
 	event.preventDefault(); //REMOVE THIS TO SUBMIT
 	let favoriteadd = document.getElementById('favAdd').value;
 	let name= document.getElementById('nameoffav').value;
@@ -214,94 +214,108 @@ document.querySelector("#enterfavorite").onsubmit = function (event) {
 	
 
 	
-}
+}*/
 document.querySelector("#directions").onsubmit = function (event) {
-//event.preventDefault(); //REMOVE THIS TO SUBMIT
-let secondadd = document.getElementById('startAdd').value;
-let address = document.getElementById('endAdd').value;
-console.log(address);
-console.log(secondadd);
-if( secondadd.length > 0)
-{
-geocoder.geocode( { 'address': secondadd}, function(results, status) {
-if (status == 'OK') {
-let markersec = new google.maps.Marker({
-map: mymap,
-position: results[0].geometry.location
-});
-mymap.panTo(markersec.position);
-document.querySelector("#startlat").value = markersec.position.lat();
-document.querySelector("#startlng").value = markersec.position.lng();
-console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
-} 
-});
-} else {
-document.querySelector("#startlat").value = startinglat;
-document.querySelector("#startlng").value = startinglng;
-console.log("STARTING: "+ startinglat + " " + startinglng);
-}
+	//event.preventDefault(); //REMOVE THIS TO SUBMIT
+	let secondadd = document.getElementById('startAdd').value;
+	let address = document.getElementById('endAdd').value;
+	console.log(address);
+	console.log(secondadd);
+	if( secondadd.length > 0) {
+		geocoder.geocode( { 'address': secondadd}, function(results, status) {
+			if (status == 'OK') {
+				let markersec = new google.maps.Marker({
+					map: mymap,
+					position: results[0].geometry.location
+				});
+				mymap.panTo(markersec.position);
+				document.querySelector("#startlat").value = markersec.position.lat();
+				document.querySelector("#startlng").value = markersec.position.lng();
+				console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
+			} 
+		});
+	} else {
+		document.querySelector("#startlat").value = startinglat;
+		document.querySelector("#startlng").value = startinglng;
+		console.log("STARTING: "+ startinglat + " " + startinglng);
+	}
 
-if (address.length > 0) {
-if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0")
-{
-$(".danger1").css("display", "block");
-}
-geocoder.geocode( { 'address': address}, function(results, status) {
-if (status == 'OK') {
-let marker = new google.maps.Marker({
-map:mymap,
-position: results[0].geometry.location
-});
- mymap.panTo(marker.position);
-document.querySelector("#endinglat").value = marker.position.lat();
-document.querySelector("#endinglng").value = marker.position.lng();
-console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
-} 
-});
-} else {
-$(".label1").css("margin-top", "5px");
-$(".danger").css("display", "block");
-}
+	if (address.length > 0) {
+		if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0") {
+			$(".danger1").css("display", "block");
+		}
+		geocoder.geocode( { 'address': address}, function(results, status) {
+			if (status == 'OK') {
+				let marker = new google.maps.Marker({
+					map:mymap,
+					position: results[0].geometry.location
+				});
+				mymap.panTo(marker.position);
+				document.querySelector("#endinglat").value = marker.position.lat();
+				document.querySelector("#endinglng").value = marker.position.lng();
+				console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
+			} 
+		});
+	} else {
+		$(".label1").css("margin-top", "5px");
+		$(".danger").css("display", "block");
+	}
 }
 
 
 document.querySelector("#endAdd").onkeypress = function() {
-if (document.querySelector(".danger").style.display == "block")
-{
-$(".label1").css("margin-top", "35px");
-$(".danger").toggle();
-}
+	if (document.querySelector(".danger").style.display == "block") {
+		$(".label1").css("margin-top", "35px");
+		$(".danger").toggle();
+	}
 }
 
 document.querySelector("#startAdd").onkeypress = function() {
-if (document.querySelector(".danger1").style.display == "block")
-{
-$(".danger1").toggle();
-}
+	if (document.querySelector(".danger1").style.display == "block") {
+		$(".danger1").toggle();
+	}
 }
 
 $("#startAdd").on('focus', function () {
-$(this).parent('label').addClass('active');
+	$(this).parent('label').addClass('active');
 });
 
 $("#startAdd").on('blur', function () {
-if($(this).val().length == 0) {
-$(this).parent('label').removeClass('active');
-}
+	if($(this).val().length == 0) {
+		$(this).parent('label').removeClass('active');
+	}
 });
 
 $("#endAdd").on('focus', function () {
-$(this).parent('label').addClass('active');
+	$(this).parent('label').addClass('active');
 });
 
 $("#endAdd").on('blur', function () {
-if($(this).val().length == 0) {
-$(this).parent('label').removeClass('active');
-}
+	if($(this).val().length == 0) {
+		$(this).parent('label').removeClass('active');
+	}
 });
 
 $('#endAdd').keypress(function(event) {
     if (event.keyCode == 13 || event.which == 13) {
-$("#directions").submit();
+    	$("#directions").submit();
     }
+});
+
+$("thead").click(function () {
+	console.log("1");
+	//$("#body").slideToggle(500);
+	$(this).parent().next("div").slideToggle(500);
+});
+
+let deleteButtons = document.querySelectorAll(".btn-danger");
+
+for( let i = 0; i < deleteButtons.length; i++ ) {
+	deleteButtons[i].onclick = function() {
+		return confirm("Are you sure you want to delete this favorite?");
+	}
+}
+
+$("#plus").click(function() {
+	$("#favoriteform").slideToggle(500);
 });

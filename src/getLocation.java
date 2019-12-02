@@ -1,4 +1,4 @@
-package fareChecker;
+//package fareChecker;
 
 import java.io.IOException;
 import java.io.PrintWriter;
