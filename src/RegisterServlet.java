@@ -1,6 +1,12 @@
 
 
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -10,6 +16,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 //import user.DbUtils;
+import javax.servlet.http.HttpSession;
 
 /**
  * Servlet implementation class RegisterServlet
@@ -26,63 +33,94 @@ public class RegisterServlet extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-    protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		String error = "";
-		String next = "/register.jsp";
-		String username = request.getParameter("username");
-		String password = request.getParameter("password");
-		String confirm = request.getParameter("confirm");
+    protected void service(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException
+	 {
+		PrintWriter out = response.getWriter();
+		HttpSession h= request.getSession();
 		
-		// error checking
-		if (username == null || username.contentEquals("")) {
-			error += "Username cannot be empty.\n";	
-		}
-		if (password == null || password.contentEquals("")) {
-			error += "Password cannot be empty.\n";	
-		}
-		if (confirm == null || confirm.contentEquals("")) {
-			error += "Must confirm password.\n";
-		} 
-		else if (!password.contentEquals(confirm)) {
-			error += "Password must match confirmed password.\n";
-		}
-		
-		// no error, add user
-		if (error.isEmpty()) {
-			DbUtils.initConnection();
-			// check user exists
-			int res = DbUtils.addUser(username, password);
-			
-			// user already exists
-			if (res == 0) {
-				error += "Username already exists.\n";
-			} else {
-				// set user is logged in
-				next = "/homepage.jsp";
-				// see if user is already logged in
-				Cookie ck[] = request.getCookies();
-				if (ck!=null) {
-					String uname = ck[0].getValue();
-					if (uname == null || !uname.equals("")) {
-						// if already logged in, log out first
-						ck[0].setMaxAge(0);
-					}
-				}
-				// log new user in
-				Cookie newCk = new Cookie("uname", username);
-				response.addCookie(newCk);
+   	 Connection conn = null;
+		 PreparedStatement  st= null;
+		 ResultSet rs= null; 
+		 String sucess="No";
+		 try 
+		 {    
+			String username= request.getParameter("username");
+			String password= request.getParameter("password1");
+			String confirm= request.getParameter("password2");
+					 
+			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
+			st= conn.prepareStatement("SELECT * FROM logins WHERE username=?");
+			st.setString(1, username);
+			rs= st.executeQuery();
+			if(rs.next())//if user name is not unique
+			{
+				
+					out.write("This username is already taken");
+				
 			}
-		}
-		
-		request.setAttribute("error", error);
-		if (error.isEmpty()) {
-			String redirect = request.getContextPath() + next;
-			response.sendRedirect(redirect);
-		} else {
-			RequestDispatcher dispatch = getServletContext().getRequestDispatcher(next);
-			dispatch.forward(request,response);
-		}
-	}
+			else//check if passwords are same
+			{
+				if(!(password.equals(confirm)))//if passwords don't match
+				{
+					
+					out.write("The passwords do not match");
+
+				}
+				else//sucessful register so insert into database
+				{
+					st= conn.prepareStatement("INSERT INTO logins (username, password) VALUES (?,?)");
+					st.setString(1, username);
+					st.setString(2, password);
+					sucess="Yes";
+					//helpful when keeping track of who is logged in 
+					h.setAttribute("username", username);					
+					st.executeUpdate();
+					
+				}
+
+			}
+
+		 }
+		 catch (SQLException sqle) 
+		 {    
+			
+			 System.out.println(sqle.getMessage());
+		 }
+		 finally
+		 {
+			 if(rs!=null)
+			 {
+				 try {
+					rs.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 if(conn!=null)
+			 {
+				 try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 if(st!=null)
+			 {
+				 try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 out.flush();
+			 out.close();
+		 }
+				
+		 
+	 }
+	
 
 }
