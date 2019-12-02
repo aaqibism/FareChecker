@@ -41,7 +41,6 @@ public class RegisterServlet extends HttpServlet {
    	 Connection conn = null;
 		 PreparedStatement  st= null;
 		 ResultSet rs= null; 
-		 String sucess="No";
 		 try 
 		 {    
 			String username= request.getParameter("username");
@@ -71,7 +70,6 @@ public class RegisterServlet extends HttpServlet {
 					st= conn.prepareStatement("INSERT INTO logins (username, password) VALUES (?,?)");
 					st.setString(1, username);
 					st.setString(2, password);
-					sucess="Yes";
 					//helpful when keeping track of who is logged in 
 					h.setAttribute("username", username);					
 					st.executeUpdate();
