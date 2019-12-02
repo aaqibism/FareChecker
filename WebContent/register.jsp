@@ -5,6 +5,22 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 	<link href="https://fonts.googleapis.com/css?family=Barlow:500|Raleway&display=swap" rel="stylesheet">
+<script>
+function register()
+{
+	var xhttp= new XMLHttpRequest();
+
+	xhttp.open("GET", "RegisterServlet?username=" + document.login.username.value+"&password1="+document.login.password1.value+"&password2="+document.login.password2.value, false);
+	
+	xhttp.send();		
+	if (xhttp.responseText.trim().length > 0) {	
+		document.getElementById("errorhere").innerHTML= xhttp.responseText;
+		return false;
+	}
+	return true;
+
+}
+</script>
 </head>
 <style>
 	#form{
@@ -35,7 +51,8 @@
 			<div class="jumbotron jumbo">
 			<h1 class = "display-4">Register</h1>
 			</div>
-			<form name="login" method="GET" action="RegisterServlet">
+			<div id="errorhere"></div>
+			<form name="login" method="GET" action="profile.jsp" onsubmit="return register();">
 				<input type="text" class = "form-control inputbar" name="username" placeholder = "Username"/><br> 
 				<input type="text" class = "form-control inputbar" name="password1" placeholder = "Password"/><br>
 				<input type="text" class = "form-control inputbar" name="password2" placeholder = "Confirm Password"/><br> 
