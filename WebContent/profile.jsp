@@ -121,7 +121,7 @@
 		</div>
 		<input type="hidden" id="startlat" value="">
 		<input type="hidden" id="startlng" value="">
-		<input type="hidden" id="endinglat"value="">
+		<input type="hidden" name="testing" id="endinglat"value="">
 		<input type="hidden" id="endinglng"value="">
 	</form>
 
@@ -212,4 +212,3 @@ function testing()
 </script>
 
 </html>
-
