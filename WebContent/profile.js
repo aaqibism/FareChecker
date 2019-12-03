@@ -251,7 +251,12 @@ document.querySelector("#directions").onsubmit = function (event) {
 				mymap.panTo(marker.position);
 				document.querySelector("#endinglat").value = marker.position.lat();
 				document.querySelector("#endinglng").value = marker.position.lng();
-				console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
+				sessionStorage.setItem("endinglat",marker.position.lat() );
+				sessionStorage.setItem("endinglng",marker.position.lng() );
+				sessionStorage.setItem("startinglat", startinglat );
+				sessionStorage.setItem("startinglng",startinglng );
+
+				console.log("Ending: " + document.querySelector("#endinglat").value + " " +document.querySelector("#endinglng").value);
 			} 
 		});
 	} else {
