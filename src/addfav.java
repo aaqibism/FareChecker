@@ -1,5 +1,5 @@
 
-
+package backend;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -25,52 +25,6 @@ public class addfav extends HttpServlet {
         super();
         // TODO Auto-generated constructor stub
     }
-    
-    public boolean add(String username, String name, double lat, double lng) {
-    	Connection conn = null;
-    	PreparedStatement  st= null;
-    	try {
-    		conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?"
-				+ "cloudSqlInstance=farechecker-258720:us-west1:finalproject"
-				+ "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
-    		st= conn.prepareStatement("INSERT INTO locations (userID, name, latitude, longitude) "
-				+ "VALUES ((SELECT userID FROM logins WHERE username=?), ?, ?, ?)"); 
-		 	st.setString(1, username);
-		 	st.setString(2, name);
-		 	st.setDouble(3, lat);
-		 	st.setDouble(4, lng);
-		 	boolean status = st.execute();
-		
-		 	return status;
-		 } catch (SQLException e) {
-			e.printStackTrace();
-			System.out.println("add method");
-		} finally {
-			
-			 if(conn!=null)
-			 {
-				 try {
-					conn.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		 
-			 if(st!=null)
-			 {
-				 try {
-					st.close();
-				} catch (SQLException e) {
-					// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				 }
-				 
-			 }
-		 }
-		return false;
-
-    }
 
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -84,7 +38,50 @@ public class addfav extends HttpServlet {
 		String usern="hassib";//(String) h.getAttribute("username");//this has to be set in login or register jsp
 
 		
+		 Connection conn = null;
+		 PreparedStatement  st= null;
+	 	 try {
+	 		System.out.println("HERE: "+lat);
+			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
+		 	st= conn.prepareStatement("INSERT INTO locations (userID, name, latitude, longitude) VALUES ((SELECT userID FROM logins WHERE username=?), ?, ?, ?)"); 
+		 	st.setString(1, usern);
+		 	st.setString(2, name);
+		 	st.setDouble(3, lat);
+		 	st.setDouble(4, lng);
+		 	st.executeUpdate();
+
+	 	 
+	 	 } catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		 finally
+		 {
+			
+			 if(conn!=null)
+			 {
+				 try {
+					conn.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 if(st!=null)
+			 {
+				 try {
+					st.close();
+				} catch (SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			 }
+			 
+		 }
+
+		
+		
+		
+		
 	}
 
-
-}
