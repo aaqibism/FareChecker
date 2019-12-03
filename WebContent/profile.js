@@ -1,12 +1,15 @@
 let startAdd;
 let favAdd;
 let endAdd;
+let autofav;
 let mymap;
 let geocoder;
 let startinglat;
 let startinglng;
 let userinfo;
 let currLoc;
+let favoritelat;
+let favoritelng;
 let traffic; //Do we want this?
 let transit; //Do we want this?
 let configmap = {
@@ -29,7 +32,8 @@ function initMap() {
 geocoder = new google.maps.Geocoder();
 mymap = new google.maps.Map(document.getElementById('map'),configmap);
 navigator.geolocation.getCurrentPosition(sucessful_location, nolocation, configmap);//gets return for cases above
-
+autofav= new google.maps.places.Autocomplete(
+		document.getElementById('locationAddress'), {types: ['establishment','geocode']});
 endAdd = new google.maps.places.Autocomplete(
 document.getElementById('endAdd'), {types: ['establishment','geocode']});
 startAdd=new google.maps.places.Autocomplete(
@@ -39,7 +43,7 @@ document.getElementById('favAdd'), {types: ['establishment','geocode']});
 endAdd.addListener('place_changed', function() {});
 startAdd.addListener('place_changed', function() {});
 favAdd.addListener('place_changed', function() {});
-
+autofav.addListener('place_changed', function() {});
 
 
 
@@ -90,7 +94,6 @@ userinfo.open(mymap);
     } 
 	if( favoriteadd.length > 0 && name.length>0)
 	{
-
 		geocoder.geocode( { 'address': favoriteadd}, function(results, status) {
 		if (status == 'OK') {
 		let markersec = new google.maps.Marker({
@@ -100,7 +103,6 @@ userinfo.open(mymap);
 		document.querySelector("#favlng").value = markersec.position.lng();
 		console.log("Favorite: "+ markersec.position.lat() + " " + markersec.position.lng());
 		var xhttp= new XMLHttpRequest();
-
 		xhttp.open("GET", "addfav?lat=" + markersec.position.lat()+
 				"&lng=" +  markersec.position.lng()+"&name="+name, false);
 		
@@ -108,10 +110,8 @@ userinfo.open(mymap);
 		return true;
 		} 
 		
-
 		});
 		
-
 		
 	}
 	else 
@@ -121,7 +121,6 @@ userinfo.open(mymap);
 		document.querySelector("#startlng").value = startinglng;
 		console.log("STARTING: "+ startinglat + " " + startinglng);
 	}
-
 	
 	
 	
@@ -212,7 +211,6 @@ document.querySelector("#enterfavorite").onsubmit = function (event) {
 	
 	//get fav lat and lng from database
 	
-
 	
 }*/
 document.querySelector("#directions").onsubmit = function (event) {
@@ -261,6 +259,10 @@ document.querySelector("#directions").onsubmit = function (event) {
 		$(".danger").css("display", "block");
 	}
 }
+
+
+
+
 
 
 document.querySelector("#endAdd").onkeypress = function() {
@@ -319,3 +321,35 @@ for( let i = 0; i < deleteButtons.length; i++ ) {
 $("#plus").click(function() {
 	$("#favoriteform").slideToggle(500);
 });
+
+function addfavadd()
+{
+	let add= document.getElementById('locationAddress').value;
+	if( add.length > 0) {
+		geocoder.geocode( { 'address': add}, function(results, status) {
+			if (status == 'OK') {
+				let markersec = new google.maps.Marker({
+				
+					position: results[0].geometry.location
+				});
+				favoritelat = markersec.position.lat();
+				favoritelng= markersec.position.lng();
+				alert(favoritelat);
+				var xhttp= new XMLHttpRequest();
+				let nameoffavorite=document.getElementById('locationName').value;
+				xhttp.open("GET", "addfav?name=" +nameoffavorite+"&lat="+favoritelat+
+						"&lng="+favoritelng, false);
+				xhttp.send();
+
+				console.log("FAVORITEHERE: "+ markersec.position.lat() + " " + markersec.position.lng());
+				location.reload();
+			} 
+			else
+				{alert("Could not process.");}
+		});
+	}
+	/**/
+	
+
+	
+}
