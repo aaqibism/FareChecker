@@ -1,5 +1,4 @@
-//package fareChecker;
-
+package backend;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -7,6 +6,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Vector;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -14,64 +14,55 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import com.google.gson.Gson;
 
-/**
- * Servlet implementation class getLocation
- */
+
+
 @WebServlet("/getLocation")
-public class getLocation extends HttpServlet {
+
+public class getLocation {
 	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
+	public Vector<location> holder;	
+	
     public getLocation() {
-        super();
+    	holder=new Vector<location>();
+    	
+    	
+    	
+    	
         // TODO Auto-generated constructor stub
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	public boolean getlocations() {
 		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
- 		PrintWriter out = response.getWriter();
-		Double startlat= Double.parseDouble(request.getParameter("startlat"));
-		Double startlng= Double.parseDouble(request.getParameter("startlng"));
-		String name= request.getParameter("name");
-		HttpSession h= request.getSession();
-		String usern="hassib"; //(String)h.getAttribute("username");//must be done in login and register servlet*********
 		
+		String usern="hassib"; //(String)h.getAttribute("username");//must be done in login and register servlet*********
 		Connection conn = null;
 		PreparedStatement  st= null;
 		ResultSet rs= null; 
 		try {
 			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
-			st= conn.prepareStatement("SELECT l.latitude FROM locations l, logins s WHERE s.username=? AND l.userID=s.userID AND l.name=?");
+			st= conn.prepareStatement("SELECT l.latitude, l.longitude, l.name FROM locations l, logins s WHERE s.username=? AND l.userID=s.userID");
 			st.setString(1, usern);
-			st.setString(2, name);
 			rs=st.executeQuery();
 			if(rs.next())//set ending latitude
 			{
-				Double lat= rs.getDouble("latitude");
-				h.setAttribute("endinglat", lat);
+				location temp=new location(rs.getString("name"),rs.getDouble("latitude"),rs.getDouble("longitude"));
+				holder.add(temp);
+				while(rs.next())
+				{
+					location t=new location(rs.getString("name"),rs.getDouble("latitude"),rs.getDouble("longitude"));
+					holder.add(t);
+				}
+				
 
 			}
 			else
 			{
-				out.write("Could not find location");
-				
+				return false;
 			}
-			st= conn.prepareStatement("SELECT l.longitude FROM locations l, logins s WHERE s.username=? AND l.userID=s.userID AND l.name=?");
-			st.setString(1, usern);
-			st.setString(2, name);
-			rs=st.executeQuery();
-			if(rs.next())//set ending latitude
-			{
-				h.setAttribute("startinglat", startlat);
-				h.setAttribute("startinglng", startlng);
-				Double lng= rs.getDouble("longitude");
-				h.setAttribute("endinglng", lng);
-
-			}
+			
+			
 			
 			
 			
@@ -108,10 +99,10 @@ public class getLocation extends HttpServlet {
 					e.printStackTrace();
 				}
 			 }
-			 out.flush();
-			 out.close();
+			 
 		 }
 
+		return true;
 
 
 	}
