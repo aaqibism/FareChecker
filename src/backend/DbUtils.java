@@ -1,3 +1,4 @@
+package backend;
 
 
 import java.sql.Connection;
@@ -14,17 +15,29 @@ public class DbUtils {
 	public static final String CREDENTIAL_STRING = "jdbc:mysql://google/FareChecker?"
 			+ "cloudSqlInstance=farechecker-258720:us-west1:finalproject"
 			+ "&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=aaa&password=aaa";
-	static Connection connection;
+	static Connection connection = null;
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		System.out.println("hi");
-		DbUtils.initConnection();
-		DbUtils.checkUserExists("admin");
+		DbUtils d = new DbUtils();
+		d.initConnection();
+		d.checkUserExists("admin");
 
 	}
 	
-	public static void initConnection() {
+	public void close() {
+		if (connection != null) {
+			try {
+				connection.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	public void initConnection() {
 		if (connection != null) {
 			System.out.println("[WARN] Connection has already been established.");
 			return;
@@ -42,8 +55,8 @@ public class DbUtils {
     	}
 	}
 	
-	public static Integer getUserID(String username) {
-		Integer res = -1;
+	public int getUserID(String username) {
+		int res = -1;
 		try {
 			PreparedStatement ps = connection.prepareStatement(
 					"SELECT userID FROM logins WHERE username=?");
@@ -52,157 +65,170 @@ public class DbUtils {
 			if (rs.next()) {
 				res = rs.getInt("userID");
 			}
+			ps.close();
+			rs.close();
+			return res;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return res;
 	}
 	
-	public static Boolean checkUserExists(String username) {
-		Boolean exists = false;
+	public boolean checkUserExists(String username) {
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT 1 username FROM logins WHERE username=?"
+					"SELECT * FROM logins WHERE username=?"
 					);
 			ps.setString(1, username);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				exists = true;
+				ps.close();
+				rs.close();
+				System.out.println("User exists");
+				return true;
 			}
+			System.out.println("User doesn't exists");
+			ps.close();
+			rs.close();
+			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return exists;
+		return false;
 	}
 	
-	// -1 if user does not exist, 0 if password does not match, 1 if password matches
-	public static int checkUserPassword(String username, String password) {
-		String resPassword = "";
-		// See if user exists
-		if (!checkUserExists(username)) {
-			return -1;
-		}
-		// See if user password matches the stored password
+	public boolean checkUserPassword(String username, String password) {
 		try {
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT username, password FROM logins WHERE username=?");
+					"SELECT * FROM logins WHERE username=? AND password=?");
 			ps.setString(1, username);
+			ps.setString(2, password);
 			ResultSet rs = ps.executeQuery();
 			if (rs.next()) {
-				resPassword = rs.getString("password");
+				ps.close();
+				rs.close();
+				System.out.println("Password correct");
+				return true;
 			}
-			
+			ps.close();
+			rs.close();
+			System.out.println("Password incorrect.");
+			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		if (resPassword.contentEquals(password)) {
-			return 1;
-		} else {
-			return 0;
-		}
+		return false;
+		
 	}
 	
-	// return 0 if user already exists, 1 if successfully added user
-	public static int addUser(String username, String password) {
-		if (checkUserExists(username)) {
-			return 0;
-		}
+	public boolean addUser(String username, String password) {
 		try {
 			PreparedStatement ps = connection.prepareStatement(
 					"INSERT INTO logins(username, password) VALUES (?, ?)");
 			ps.setString(1, username);
 			ps.setString(2, password);
-			ps.execute();
+			boolean status = ps.execute();
+			
 			ps.close();
-		}catch (SQLException e) {
+			return status;
+		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return 1;
+		return false;
 	}
 	
 	// adding a favorite ride
-	public static void addFavorite(int user_id, String XXX) {
-		Boolean exists = false;
+	public boolean addFavorite(String username, String name, double lat, double lng) {
 		try {
-			PreparedStatement ps_try = connection.prepareStatement(
-					"SELECT 1 id FROM locations WHERE userID=? AND XXX=?"
-					);
-			ps_try.setInt(1, user_id);
-			ps_try.setString(2, XXX);
-			ResultSet rs = ps_try.executeQuery();
-			if (rs.next()) {
-				exists = true;
-			}
+			int id = getUserID(username);
+			if (id == -1)
+				return false;
 			
+			PreparedStatement ps = connection.prepareStatement(
+					"INSERT INTO locations(userID, name, latitude, longitude) VALUES (?, ?, ?, ?)");
+			ps.setInt(1, id);
+			ps.setString(2, name);
+			ps.setDouble(3, lat);
+			ps.setDouble(4, lng);
+			boolean status = ps.execute();
+			
+			ps.close();
+			return status;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		
-		if (exists == true) {
-			// already exists dont add.
-			return;
-		} else {
-			try {
-				PreparedStatement ps = connection.prepareStatement(
-						"INSERT INTO locations (userID, XXX) VALUES (?, ?)"
-						);
-				ps.setInt(1, user_id);
-				ps.setString(2, XXX);
-				ps.execute();
-				ps.close();
-			} catch (SQLException e) {
-				e.printStackTrace();
-			}
-		}
+		return false;
 	}
 
 	// remove a favorite
-	public static void removeFavorite(int user_id, String XXX) {
+	public boolean removeFavorite(String username, String name) {
 		try {
+			int id = getUserID(username);
+			if (id == -1)
+				return false;
 			PreparedStatement ps = connection.prepareStatement(
-					"DELETE FROM locations WHERE userID=? AND XXX=?"
+					"DELETE FROM locations WHERE userID=? AND name=?"
 					);
-			ps.setInt(1, user_id);
-			ps.setString(2, XXX);
-			ps.execute();
+			ps.setInt(1, id);
+			ps.setString(2, name);
+			boolean status = ps.execute();
+
 			ps.close();
+			return status;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		return false;
 	}
 	
 	// is favorite 
-	public static Boolean isFavorite(int user_id, String XXX) {
-		Boolean isfav = false;
+	public boolean isFavorite(String username, String name) {
 		try {
+			int id = getUserID(username);
+			if (id == -1)
+				return false;
+			
 			PreparedStatement ps_try = connection.prepareStatement(
-					"SELECT 1 id FROM locations WHERE userID=? AND XXX=?"
+					"SELECT * FROM locations WHERE userID=? AND name=?"
 					);
-			ps_try.setInt(1, user_id);
-			ps_try.setString(2, XXX);
+			ps_try.setInt(1, id);
+			ps_try.setString(2, name);
 			ResultSet rs = ps_try.executeQuery();
 			if (rs.next()) {
-				isfav = true;
+				rs.close();
+				ps_try.close();
+				return true;
 			}
 			
+			rs.close();
+			ps_try.close();
+			return false;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-		return isfav;
+		return false;
 	}
 	
 	// get all favorites of a user
-	public static List<String> getUserFavorites(int user_id) {
+	public List<String> getUserFavorites(String username) {
 		List<String> favorites = new ArrayList<String>();
 		try {
+			int id = getUserID(username);
+			if (id == -1)
+				return favorites;
+			
 			PreparedStatement ps = connection.prepareStatement(
-					"SELECT XXX FROM locations WHERE userID=? ORDER BY created_at DESC "
+					"SELECT * FROM locations WHERE userID=?"
 					);
-			ps.setInt(1, user_id);
+			ps.setInt(1, id);
 			ResultSet rs = ps.executeQuery();
 			while (rs.next()) {
-				favorites.add(rs.getString("XXX"));
+				favorites.add(rs.getString("name"));
 			}
+			
+			rs.close();
+			ps.close();
+			return favorites;
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}

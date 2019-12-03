@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-        <%@ page import="backend.getLocation"%> 
+<%@ page import="backend.getLocation"%> 
     
 <!DOCTYPE html>
 <html>
@@ -14,8 +14,10 @@
 
 </head>
 <body>
-	<% getLocation mine= new getLocation();
-		mine.getlocations();%>
+	<%
+		backend.getLocation mine= new backend.getLocation();
+			mine.getlocations();
+	%>
 
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>

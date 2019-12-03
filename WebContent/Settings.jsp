@@ -3,13 +3,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Cpmpatible" content="IE-edge">
-<meta name="viewport" content="width - device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="styles.css">
-<title>Settings</title>
-
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Cpmpatible" content="IE-edge">
+	<meta name="viewport" content="width - device-width, initial-scale=1">
+	<title>Settings</title>
+	
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Barlow:500|Raleway&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
 <%
@@ -23,7 +24,6 @@
 		errorPass = "";
 	}
 %>
-<table>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
@@ -31,46 +31,25 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    	<ul class="navbar-nav mr-auto">
 		    	<li class="nav-item active">
-		        	<a class="nav-link" href="Settings.jsp">Settings <span class="sr-only">(current)</span></a>
+		        	<a class="nav-link" href="profile.jsp">Profile</a>
 				</li>
 			</ul>
 		</div>
 	</nav>
-	<h3> Setting</h3>
-	<table style="width:100%">
+	<div class="jumbotron jumbo">
+		<h1 class="display-4" id="test">Settings</h1>
+	</div>
 	
-	 <tr>
-    	<th>User</th>
-    	<th>Password</th> 
-
-  	</tr>
-		<form method ="POST" action="Settings" name="login"> 
-		 	<tr>
-		 	<th> 
-			 	<br> New Username : <input id ="textbox" type="password" name="newUsername"><br/><br/> 
-		         <%= errorUser %></div>  
-	         </th>
-	         <th>
-	         New Email : <input id ="textbox" type="password" name ="newEmail" ><br/> 
-	         <%= errorPass %></div>  
-	         </th>
-	        </tr>
-	         <tr>
-		         <th>
-		         <br> Current Password : <input id ="textbox" type="password" name="originalPassword"><br/><br/> 
-		         <%= errorUser %></div>  
-		         </th>
-		        <th> 
-		         New Password : <input id ="textbox" type="password" name ="newPassword" ><br/> 
-		         <%= errorPass %></div>  
-		         Confirm Password : <input id ="textbox" type="password" name ="confirmPassword" ><br/> 
-		         </th>
-		        
-	         </tr>
-	        <input id ="textbox" type =submit value="Change"> 
-		</form> 
-
-</table>
+	<div id="settingsForm">
+		<form action="Settings" method="Post">
+			<input type="text" class="form-control" name="currUsername" placeholder="Current Username">
+			<input type="password" class="form-control" name="originalPassword" placeholder="Current Password">
+			<input type="text" class="form-control" name="newPassword" placeholder="New Password">
+			<input type="text" class="form-control" name="confirmPassword" placeholder="Confirm Password">
+			<button type="submit" class="btn btn-primary">Change</button>						
+		</form>
+	</div>
+	
 <script type='text/javascript' src="config.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
 	crossorigin="anonymous"></script>
