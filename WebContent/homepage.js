@@ -77,7 +77,7 @@ function nolocation()
 
 //should get cord. of final destination based on user input for adrs 
 document.querySelector("#directions").onsubmit = function (event) {
-	event.preventDefault(); //REMOVE THIS TO SUBMIT
+	//event.preventDefault(); //REMOVE THIS TO SUBMIT
 	let secondadd = document.getElementById('startAdd').value;
 	let address = document.getElementById('endAdd').value;
 	console.log(address);
@@ -116,6 +116,11 @@ document.querySelector("#directions").onsubmit = function (event) {
 				// mymap.panTo(marker.position);
 				document.querySelector("#endinglat").value = marker.position.lat();
 				document.querySelector("#endinglng").value = marker.position.lng();
+				sessionStorage.setItem("endinglat",marker.position.lat() );
+				sessionStorage.setItem("endinglng",marker.position.lng() );
+				sessionStorage.setItem("startinglat", startinglat );
+				sessionStorage.setItem("startinglng",startinglng );
+
 				console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
 			} 
 		});
