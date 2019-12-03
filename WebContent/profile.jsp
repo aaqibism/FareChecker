@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+        <%@ page import="backend.getLocation"%> 
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,8 +11,11 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="styles.css">
 <title>Profile</title>
+
 </head>
 <body>
+	<% getLocation mine= new getLocation();
+		mine.getlocations();%>
 
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
@@ -24,7 +29,7 @@
 			</ul>
 		</div>
 	</nav>
-	
+	 
 	<div class="jumbotron jumbo">
 		<h1 class="display-4">Welcome To FareChecker</h1>
 		<p class="lead">This website will help you navigate the frustrating experience of finding the cheapest ride to your favorite places!</p>
@@ -44,28 +49,33 @@
 				<th width="25%" scope="col">Delete</th>
     		</tr>
 		</thead>
+		<%int index=0; %>
+		
 		</table>
 		
 			<table class="table table-hover">
-				<tbody>
-				<tr>
-					<th width="10%" scope="row">1</th>
-					<td width="15%">Home</td>
-					<td width="45%">3115 Orchard Ave, Los Angeles, CA 90007</td>
-					<td width="25%"><button class="btn btn-danger">Delete</button></td>
-				</tr>
-				<tr>
-					<th scope="row">2</th>
-					<td>School</td>
-					<td>University of California, Los Angeles, CA 90007</td>
-					<td><button class="btn btn-danger">Delete</button></td>
-				</tr>
-				<tr>
-					<th scope="row">3</th>
-					<td>Work</td>
-					<td>840 Childs Way, Los Angeles, CA 90089</td>
-					<td><button class="btn btn-danger">Delete</button></td>
-				</tr>
+			<script>
+			var size=<%=mine.holder.size()%>;
+			var complete=[];
+			var url="";
+			
+			</script>
+			<%String html="";%>
+				<tbody id="fill">
+				<%for(int i=0;i<mine.holder.size();i++){ %>
+				   <script>
+				   complete.push(<%=mine.holder.get(i).lat%>);
+				   complete.push(<%=mine.holder.get(i).lng%>);
+				   var indexx=<%=i%>;
+				   var nameee='<%=mine.holder.get(i).name%>';
+				   url+='<tr id="hello'+indexx+'"><th width="10%" scope="row">'+(indexx+1)+'</th> <td width="15%">'+nameee+'</td> <td width="45%">'+' replaceme '+'</td> <td width="25%"><button class="btn btn-danger" onclick="remove(' +indexx +','+"'"+nameee+"'"+');">Delete</button></td> </tr>';
+				   </script>
+				   <%} %>
+				
+				
+				
+				
+		
 				</tbody>
 			</table>
 		</div>
@@ -76,10 +86,11 @@
 			<i class="fas fa-plus"></i>
 			<h6>Add a New Favorite<h6>
 		</div>
-		<form name="myform" id="favoriteform" method="get">
+		<form name="myform" id="favoriteform" method="get" onsubmit="return addfavadd();">
 			<input type=text id="locationName" class="form-control" placeholder="Name of Location">
 			<input type=text id="locationAddress" class="form-control" placeholder="Address">
-			<button type="submit" class="btn btn-primary">Submit</button>
+			<input id = "Buttonfav" type="submit" class = "btn btn-primary" name="registerSubmit" value="Submit" />
+			
 		</form>
 	</div>
 	
@@ -116,65 +127,12 @@
 
 
 
-<!-- <div id="enterFav">
-	<div id="errorFav"></div>
-	<form name="myform" action="details.jsp" id="enterfavorite" class="form-inline" method="get">
-		   <input type="text" class="form-control" id="enterfavresult" placeholder="Have a favorite saved? Enter name.">
-			<button type="submit" class="btn btn-primary" id="submitfav">Find favorite</button> 
-			<input type="hidden" id="startflat" value="">
-			<input type="hidden" id="startflng" value="">
-			<input type="hidden" id="endingflat"value="">
-			<input type="hidden" id="endingflng"value="">
-	</form>
-</div>
-
-<div class="container">
-
-	<form name="myform" id="favoriteform" class="form-inline" method="get">
-			<div id="error">
-			</div>
-			<div class="form-group row" >
-					<div class="test2">
-						<div class="cntr">
-							<div class="cntr-innr" id="locationField3">
-								<label class="search" for="favAdd">
-									<input id="favAdd" class="form-control" type="text" style=" border:1px solid #d66; "placeholder="Enter favorite address"/>
-								</label>
-								<h6 class="danger">Enter a favorite</h5>
-							</div>
-						</div>
-					</div>
-			
-		   		 <input type="text" class="form-control" style="position:relative; height:39px;left:60px; top:10px; width:350px;" id="nameoffav" placeholder="What is the name of your favorite location?">
-		  		 
-		  		
-			</div>
-			
-			<input type="hidden" id="favlat" value="">
-			<input type="hidden" id="favlng" value="">
-			<input type="submit" style="position:relative; left:90px; top:10px;" id="submitform" value="Submit Favorite"> 
-			
-			
-	
-	</form>
-
-
-
-
-
-
-
-
-</div> -->
-
-
 
 
 
 <div id="wrapper">
 		<div id="map"></div>
 </div>
-
 
 <script type='text/javascript' src="config.js"></script>
 <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
@@ -184,5 +142,74 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
 <script type='text/javascript' src="profile.js"></script>
 
+				
+<script>
+
+function remove(indexof,nameof){
+
+	alert(nameof);
+	var xhttp= new XMLHttpRequest();
+	xhttp.open("GET", "remove?name="+nameof, true);
+	xhttp.send();
+	var idd= "hello"+indexof;
+	document.getElementById(idd).innerHTML='';
+	
+	
+
+}
+
+</script>
+
+
+		
 </body>
+<script>
+testing();
+function testing()
+{
+		var i;
+		var index=-1;
+		console.log(size);
+		for(i=0;i<(complete.length/2);i++)
+		{
+			index=index+1;
+			var lat=complete[index];
+			index=index+1;
+			var lng=complete[index];
+			
+			var xhttp= new XMLHttpRequest();
+			xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&key="+API_KEY,false);
+			xhttp.send();
+			console.log("RESPONSE: "+xhttp.responseText);
+			var x = JSON.parse(xhttp.responseText);
+			console.log(x.results[0].formatted_address);
+			if(url.includes("replaceme"))
+			{
+				var rep=JSON.stringify(x.results[0].formatted_address);
+				while(rep.includes('"'))
+				{
+					
+					rep= rep.replace('"'," " );
+		
+				}
+				while(rep.includes('"'))
+				{
+					
+					rep= rep.replace('"'," " );
+		
+				}
+				url= url.replace("replaceme",rep );
+		
+				
+			}
+		}
+		console.log(url);
+		
+		document.getElementById("fill").innerHTML=url;
+}
+
+
+</script>
+
 </html>
+
