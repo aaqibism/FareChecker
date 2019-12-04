@@ -241,6 +241,7 @@ document.querySelector("#directions").onsubmit = function (event) {
 	if (address.length > 0) {
 		if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0") {
 			$(".danger1").css("display", "block");
+			return false;
 		}
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == 'OK') {
@@ -264,6 +265,7 @@ document.querySelector("#directions").onsubmit = function (event) {
 	} else {
 		$(".label1").css("margin-top", "5px");
 		$(".danger").css("display", "block");
+		return false;
 	}
 }
 
@@ -305,12 +307,6 @@ $("#endAdd").on('blur', function () {
 	}
 });
 
-$('#endAdd').keypress(function(event) {
-    if (event.keyCode == 13 || event.which == 13) {
-    	$("#directions").submit();
-    }
-});
-
 $("thead").click(function () {
 	console.log("1");
 	//$("#body").slideToggle(500);
@@ -344,19 +340,72 @@ function addfavadd()
 				alert(favoritelat);
 				var xhttp= new XMLHttpRequest();
 				let nameoffavorite=document.getElementById('locationName').value;
-				xhttp.open("GET", "addfav?name=" +nameoffavorite+"&lat="+favoritelat+
-						"&lng="+favoritelng, false);
-				xhttp.send();
-
+				xhttp.open("POST", "addfav", false);
+				xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+				xhttp.send("name=" +nameoffavorite+"&lat="+favoritelat+"&lng="+favoritelng);
 				console.log("FAVORITEHERE: "+ markersec.position.lat() + " " + markersec.position.lng());
 				location.reload();
 			} 
-			else
-				{alert("Could not process.");}
+			else {
+				alert("Could not process.");
+			}
 		});
-	}
-	/**/
+	}	
+}
+
+function remove(indexof,nameof){
+
+	alert(nameof);
+	var xhttp= new XMLHttpRequest();
+	xhttp.open("POST", "remove", true);
+	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+	xhttp.send("name="+nameof);
+	var idd= "hello"+indexof;
+	document.getElementById(idd).innerHTML='';
+	
 	
 
-	
+}
+
+function testing()
+{
+		var i;
+		var index=-1;
+		console.log(size);
+		for(i=0;i<(complete.length/2);i++)
+		{
+			index=index+1;
+			var lat=complete[index];
+			index=index+1;
+			var lng=complete[index];
+			
+			var xhttp= new XMLHttpRequest();
+			xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&key="+API_KEY,false);
+			xhttp.send();
+			console.log("RESPONSE: "+xhttp.responseText);
+			var x = JSON.parse(xhttp.responseText);
+			console.log(x.results[0].formatted_address);
+			if(url.includes("replaceme"))
+			{
+				var rep=JSON.stringify(x.results[0].formatted_address);
+				while(rep.includes('"'))
+				{
+					
+					rep= rep.replace('"'," " );
+		
+				}
+				while(rep.includes('"'))
+				{
+					
+					rep= rep.replace('"'," " );
+		
+				}
+				url= url.replace("replaceme",rep );
+		
+				
+			}
+		}
+		console.log(url);
+		
+		document.getElementById("fill").innerHTML=url;
 }

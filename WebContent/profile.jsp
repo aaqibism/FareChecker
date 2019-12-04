@@ -11,18 +11,18 @@
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
 <link rel="stylesheet" type="text/css" href="styles.css">
 <title>Profile</title>
-
+<% //meant to help getLocation.java figure out who is currently logged in
+HttpSession h= request.getSession();
+String username=(String)h.getAttribute("username");
+if (username == null || username.isEmpty()) {
+	response.sendRedirect("homepage.jsp");
+}
+getLocation mine= new getLocation(username);
+mine.getlocations();
+%>
 </head>
-<body>
-	<% //meant to help getLocation.java figure out who is currently logged in
-	HttpSession h= request.getSession();
-	String username=(String)h.getAttribute("username");
-	if (username == null || username.isEmpty()) {
-		response.sendRedirect("homepage.jsp");
-	}
-	getLocation mine= new getLocation(username);
-	mine.getlocations();
-	%>
+<body onload="testing();">
+
 
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
@@ -96,7 +96,7 @@
 			<i class="fas fa-plus"></i>
 			<h6>Add a New Favorite<h6>
 		</div>
-		<form name="myform" id="favoriteform" method="get" onsubmit="return addfavadd();">
+		<form name="myform" id="favoriteform" method="post" onsubmit="return addfavadd();">
 			<input type=text id="locationName" class="form-control" placeholder="Name of Location">
 			<input type=text id="locationAddress" class="form-control" placeholder="Address">
 			<input id = "Buttonfav" type="submit" class = "btn btn-primary" name="registerSubmit" value="Submit" />
@@ -121,8 +121,7 @@
 				<div class="cntr-innr" id="locationField2">
 					<label class="search" for="endAdd">
 						<input id="endAdd" type="text" placeholder=""/>
-						<!-- <input type="submit" style="display: none;" /> -->
-						<!-- <button type="submit" style="display: none;"></button> -->
+						<button type="submit" style="display: none;"></button>
 					</label>
 					<p class="label1">Going To...</p>
 					<h5 class="danger">Enter a destination</h5>
@@ -131,7 +130,7 @@
 		</div>
 		<input type="hidden" id="startlat" value="">
 		<input type="hidden" id="startlng" value="">
-		<input type="hidden" name="testing" id="endinglat"value="">
+		<input type="hidden" id="endinglat"value="">
 		<input type="hidden" id="endinglng"value="">
 	</form>
 
@@ -151,75 +150,6 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
 <script type='text/javascript' src="profile.js"></script>
-
-				
-<script>
-
-function remove(indexof,nameof){
-
-	alert(nameof);
-	var xhttp= new XMLHttpRequest();
-	xhttp.open("GET", "remove?name="+nameof, true);
-	xhttp.send();
-	var idd= "hello"+indexof;
-	document.getElementById(idd).innerHTML='';
-	
-	
-
-}
-
-</script>
-
-
-		
 </body>
-<script>
-testing();
-function testing()
-{
-		var i;
-		var index=-1;
-		console.log(size);
-		for(i=0;i<(complete.length/2);i++)
-		{
-			index=index+1;
-			var lat=complete[index];
-			index=index+1;
-			var lng=complete[index];
-			
-			var xhttp= new XMLHttpRequest();
-			xhttp.open("GET", "https://maps.googleapis.com/maps/api/geocode/json?latlng="+lat+","+lng+"&key="+API_KEY,false);
-			xhttp.send();
-			console.log("RESPONSE: "+xhttp.responseText);
-			var x = JSON.parse(xhttp.responseText);
-			console.log(x.results[0].formatted_address);
-			if(url.includes("replaceme"))
-			{
-				var rep=JSON.stringify(x.results[0].formatted_address);
-				while(rep.includes('"'))
-				{
-					
-					rep= rep.replace('"'," " );
-		
-				}
-				while(rep.includes('"'))
-				{
-					
-					rep= rep.replace('"'," " );
-		
-				}
-				url= url.replace("replaceme",rep );
-		
-				
-			}
-		}
-		console.log(url);
-		
-		document.getElementById("fill").innerHTML=url;
-}
-
-
-</script>
-
 </html>
 

@@ -27,16 +27,16 @@ public class addfav extends HttpServlet {
     }
 
 	
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
-		double lat =Double.parseDouble(request.getParameter("lat"));
-		double lng= Double.parseDouble(request.getParameter("lng"));
+		double lat = Double.parseDouble(request.getParameter("lat"));
+		double lng = Double.parseDouble(request.getParameter("lng"));
 		String name= request.getParameter("name");
 		System.out.println("Lat: "+ lat+ " , lng: "+ lng+ " name: "+name);
 		HttpSession h= request.getSession();
-		String usern="hassib";//(String) h.getAttribute("username");//this has to be set in login or register jsp
-
+		String usern=(String) h.getAttribute("username");//this has to be set in login or register jsp
+		System.out.println(lat + " " + lng + " " + name + " " + usern);
 		
 		 Connection conn = null;
 		 PreparedStatement  st= null;

@@ -30,15 +30,15 @@ public class remove extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		response.getWriter().append("Served at: ").append(request.getContextPath());
 		Connection conn = null;
-		 PreparedStatement  st= null;
-		 ResultSet rs= null;
+		PreparedStatement  st= null;
+		ResultSet rs= null;
 		HttpSession ses= request.getSession();
 		String name= request.getParameter("name");
-		String userinfo="hassib";//(String) ses.getAttribute("username");
+		String userinfo= (String) ses.getAttribute("username");
 		 try 
 		 { 
 				Class.forName("com.mysql.jdbc.Driver");
