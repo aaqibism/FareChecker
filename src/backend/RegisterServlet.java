@@ -9,10 +9,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
-import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -39,15 +37,15 @@ public class RegisterServlet extends HttpServlet {
 		PrintWriter out = response.getWriter();
 		HttpSession h= request.getSession();
 		
-   	 Connection conn = null;
-		 PreparedStatement  st= null;
-		 ResultSet rs= null; 
-		 try 
-		 {    
+   	 	Connection conn = null;
+   	 	PreparedStatement  st= null;
+   	 	ResultSet rs= null; 
+   	 	try {    
 			String username= request.getParameter("username");
 			String password= request.getParameter("password1");
 			String confirm= request.getParameter("password2");
-					 
+			
+			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
 			st= conn.prepareStatement("SELECT * FROM logins WHERE username=?");
 			st.setString(1, username);
@@ -55,7 +53,8 @@ public class RegisterServlet extends HttpServlet {
 			if(rs.next())//if user name is not unique
 			{
 				
-					out.write("This username is already taken");
+				out.write("This username is already taken");
+				System.out.println("Username taken");
 				
 			}
 			else//check if passwords are same
@@ -64,7 +63,8 @@ public class RegisterServlet extends HttpServlet {
 				{
 					
 					out.write("The passwords do not match");
-
+					System.out.println("Passwords don't match");
+	
 				}
 				else//sucessful register so insert into database
 				{
@@ -74,19 +74,18 @@ public class RegisterServlet extends HttpServlet {
 					//helpful when keeping track of who is logged in 
 					h.setAttribute("username", username);					
 					st.executeUpdate();
-					
+					out.write("");
+					System.out.println("Success");
 				}
-
+	
 			}
-
+	
 		 }
-		 catch (SQLException sqle) 
-		 {    
-			
+		 catch (SQLException | ClassNotFoundException sqle)  {    
 			 System.out.println(sqle.getMessage());
 		 }
-		 finally
-		 {
+		 finally {
+			 
 			 if(rs!=null)
 			 {
 				 try {
@@ -117,9 +116,9 @@ public class RegisterServlet extends HttpServlet {
 			 out.flush();
 			 out.close();
 		 }
-				
-		 
-	 }
+			
+	 
+ }
 	
 
 }
