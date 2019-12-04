@@ -31,7 +31,7 @@
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    	<ul class="navbar-nav mr-auto">
 				<li class="nav-item active">
-		        	<a class="nav-link" href="homepage.jsp">Logout</a>
+		        	<a class="nav-link" href="logout.jsp">Log out</a>
 				</li>
 			</ul>
 		</div>

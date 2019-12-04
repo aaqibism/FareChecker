@@ -42,6 +42,7 @@ public class getLocation {
 		PreparedStatement  st= null;
 		ResultSet rs= null; 
 		try {
+			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
 			st= conn.prepareStatement("SELECT l.latitude, l.longitude, l.name FROM locations l, logins s WHERE s.username=? AND l.userID=s.userID");
 			st.setString(1, usern);
@@ -67,7 +68,7 @@ public class getLocation {
 			
 			
 			
-		} catch (SQLException e) {
+		} catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

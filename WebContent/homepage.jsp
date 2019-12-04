@@ -13,6 +13,13 @@
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
+<%
+	HttpSession h = request.getSession();
+	String username=(String)h.getAttribute("username");
+	if (username != null && !username.isEmpty()) {
+		response.sendRedirect("profile.jsp");
+	}
+%>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="homepage.jsp">FareChecker</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
@@ -52,8 +59,7 @@
 				<div class="cntr-innr" id="locationField2">
 					<label class="search" for="endAdd">
 						<input id="endAdd" type="text" placeholder=""/>
-						<!-- <input type="submit" style="display: none;" /> -->
-						<!-- <button type="submit" style="display: none;"></button> -->
+						<button type="submit" style="display: none;"></button>
 					</label>
 					<p class="label1">Going To...</p>
 					<h5 class="danger">Enter a destination</h5>
@@ -62,8 +68,8 @@
 		</div>
 		<input type="hidden" id="startlat" value="">
 		<input type="hidden" id="startlng" value="">
-		<input type="hidden" id="endinglat"value="">
-		<input type="hidden" id="endinglng"value="">
+		<input type="hidden" id="endinglat" value="">
+		<input type="hidden" id="endinglng" value="">
 	</form>
 
 	<div id="wrapper">

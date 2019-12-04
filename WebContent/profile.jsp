@@ -14,11 +14,15 @@
 
 </head>
 <body>
-	<%//meant to help getLocation.java  figure out who is currently logged in
+	<% //meant to help getLocation.java figure out who is currently logged in
 	HttpSession h= request.getSession();
 	String username=(String)h.getAttribute("username");
+	if (username == null || username.isEmpty()) {
+		response.sendRedirect("homepage.jsp");
+	}
 	getLocation mine= new getLocation(username);
-		mine.getlocations();%>
+	mine.getlocations();
+	%>
 
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
@@ -26,8 +30,11 @@
 		</button>
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    	<ul class="navbar-nav mr-auto">
+	    		<li class="nav-item active">
+		        	<a class="nav-link" href="logout.jsp">Log Out<span class="sr-only">(current)</span></a>
+				</li>
 		    	<li class="nav-item active">
-		        	<a class="nav-link" href="Settings.jsp">Settings <span class="sr-only">(current)</span></a>
+		        	<a class="nav-link" href="Settings.jsp">Settings<span class="sr-only">(current)</span></a>
 				</li>
 			</ul>
 		</div>

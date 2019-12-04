@@ -42,6 +42,7 @@ public class addfav extends HttpServlet {
 		 PreparedStatement  st= null;
 	 	 try {
 	 		System.out.println("HERE: "+lat);
+			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
 		 	st= conn.prepareStatement("INSERT INTO locations (userID, name, latitude, longitude) VALUES ((SELECT userID FROM logins WHERE username=?), ?, ?, ?)"); 
 		 	st.setString(1, usern);
@@ -51,7 +52,7 @@ public class addfav extends HttpServlet {
 		 	st.executeUpdate();
 
 	 	 
-	 	 } catch (SQLException e) {
+	 	 } catch (SQLException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}

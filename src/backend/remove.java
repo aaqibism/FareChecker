@@ -41,7 +41,7 @@ public class remove extends HttpServlet {
 		String userinfo="hassib";//(String) ses.getAttribute("username");
 		 try 
 		 { 
-			 	
+				Class.forName("com.mysql.jdbc.Driver");
 				conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
 			 	st= conn.prepareStatement("SELECT userID FROM logins WHERE username=?");
 			 	st.setString(1, userinfo);
@@ -53,7 +53,7 @@ public class remove extends HttpServlet {
 				st.setString(2, name);
 				st.executeUpdate();	 
 		 }
-		 catch (SQLException sqle) 
+		 catch (SQLException | ClassNotFoundException sqle) 
 		 {    
 			
 			 System.out.println(sqle.getMessage());

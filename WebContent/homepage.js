@@ -106,6 +106,7 @@ document.querySelector("#directions").onsubmit = function (event) {
 		if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0")
 		{
 			$(".danger1").css("display", "block");
+			return false;
 		}
 		geocoder.geocode( { 'address': address}, function(results, status) {
 			if (status == 'OK') {
@@ -127,6 +128,7 @@ document.querySelector("#directions").onsubmit = function (event) {
 	} else {
 		$(".label1").css("margin-top", "5px");
 		$(".danger").css("display", "block");
+		return false;
 	}
 }
 
@@ -166,8 +168,3 @@ $("#endAdd").on('blur', function () {
 	}
 });
 
-$('#endAdd').keypress(function(event) {
-    if (event.keyCode == 13 || event.which == 13) {
-		$("#directions").submit();
-    }
-});
