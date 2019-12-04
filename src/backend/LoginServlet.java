@@ -31,7 +31,7 @@ public class LoginServlet extends HttpServlet {
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
 		PrintWriter out = response.getWriter();
-		HttpSession h= request.getSession();
+		HttpSession h = request.getSession();
 		Connection conn = null;
 		PreparedStatement  st= null;
 		ResultSet rs= null; 
@@ -39,9 +39,14 @@ public class LoginServlet extends HttpServlet {
 		 {    
 			String username= request.getParameter("username");
 			String password= request.getParameter("password");
-
 			System.out.println(username);
 			System.out.println(password);
+			if (username == null || password == null || username.isEmpty() || password.isEmpty()) {
+				out.write("Incorrect Username or Password");
+				out.flush();
+				out.close();
+				return;
+			}
 			Class.forName("com.mysql.jdbc.Driver");
 			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
 			st= conn.prepareStatement("SELECT * FROM logins WHERE username=?");

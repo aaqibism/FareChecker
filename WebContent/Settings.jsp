@@ -14,14 +14,16 @@
 </head>
 <body>
 <%
-	String errorUser = (String) session.getAttribute("errorUser");
-	String errorPass = (String) session.getAttribute("errorPass");
-
-	if(errorUser == null){
-		errorUser = "";
+	HttpSession h= request.getSession();
+	String username = (String)h.getAttribute("username");
+	if (username == null || username.isEmpty()) {
+		//response.sendRedirect("login.jsp");
+		//return;
 	}
-	if(errorPass == null){
-		errorPass = "";
+	
+	String error = (String)request.getAttribute("error");
+	if (error == null || error.isEmpty()) {
+		error = "";
 	}
 %>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
@@ -39,6 +41,8 @@
 	<div class="jumbotron jumbo">
 		<h1 class="display-4" id="test">Settings</h1>
 	</div>
+	
+	<div class='text-danger' style="margin:10px; text-align:center;"><%= error %></div>
 	
 	<div id="settingsForm">
 		<form action="Settings" method="Post">

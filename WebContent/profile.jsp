@@ -12,16 +12,16 @@
 <link rel="stylesheet" type="text/css" href="styles.css">
 <title>Profile</title>
 <% //meant to help getLocation.java figure out who is currently logged in
-HttpSession h= request.getSession();
-String username=(String)h.getAttribute("username");
-if (username == null || username.isEmpty()) {
-	response.sendRedirect("homepage.jsp");
-}
-getLocation mine= new getLocation(username);
-mine.getlocations();
+	HttpSession h= request.getSession();
+	String username=(String)h.getAttribute("username");
+	if (username == null || username.isEmpty()) {
+		response.sendRedirect("homepage.jsp");
+	}
+	getLocation mine= new getLocation(username);
+	mine.getlocations();
 %>
 </head>
-<body onload="testing();">
+<body>
 
 
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
@@ -31,7 +31,7 @@ mine.getlocations();
 		<div class="collapse navbar-collapse" id="navbarSupportedContent">
 	    	<ul class="navbar-nav mr-auto">
 	    		<li class="nav-item active">
-		        	<a class="nav-link" href="logout.jsp">Log Out<span class="sr-only">(current)</span></a>
+		        	<a class="nav-link" href="logout.jsp">Log out<span class="sr-only">(current)</span></a>
 				</li>
 		    	<li class="nav-item active">
 		        	<a class="nav-link" href="Settings.jsp">Settings<span class="sr-only">(current)</span></a>
@@ -96,7 +96,7 @@ mine.getlocations();
 			<i class="fas fa-plus"></i>
 			<h6>Add a New Favorite<h6>
 		</div>
-		<form name="myform" id="favoriteform" method="post" onsubmit="return addfavadd();">
+		<form name="myform" id="favoriteform" action="profile.jsp" method="post">
 			<input type=text id="locationName" class="form-control" placeholder="Name of Location">
 			<input type=text id="locationAddress" class="form-control" placeholder="Address">
 			<input id = "Buttonfav" type="submit" class = "btn btn-primary" name="registerSubmit" value="Submit" />

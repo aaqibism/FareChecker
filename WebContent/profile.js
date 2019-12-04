@@ -325,37 +325,45 @@ $("#plus").click(function() {
 	$("#favoriteform").slideToggle(500);
 });
 
-function addfavadd()
-{
-	let add= document.getElementById('locationAddress').value;
-	if( add.length > 0) {
-		geocoder.geocode( { 'address': add}, function(results, status) {
-			if (status == 'OK') {
-				let markersec = new google.maps.Marker({
+var geo = false;
+
+document.querySelector("#favoriteform").onsubmit = function() {
+	if (!geo) {
+		let add= document.getElementById('locationAddress').value;
+		let nameoffavorite=document.getElementById('locationName').value;
+		if( add.length > 0 && nameoffavorite.length > 0) {
+			geocoder.geocode( { 'address': add}, function(results, status) {
+				if (status == 'OK') {
+					geo = true;
+					let markersec = new google.maps.Marker({
+					
+						position: results[0].geometry.location
+					});
+					favoritelat = markersec.position.lat();
+					favoritelng= markersec.position.lng();
+					//alert(favoritelat);
+					var xhttp= new XMLHttpRequest();
+					xhttp.open("POST", "addfav", false);
+					xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+					xhttp.send("name=" +nameoffavorite+"&lat="+favoritelat+"&lng="+favoritelng);
+					console.log("FAVORITEHERE: "+ markersec.position.lat() + " " + markersec.position.lng());
+				} 
+				else {
+					alert("Could not process.");
+				}
 				
-					position: results[0].geometry.location
-				});
-				favoritelat = markersec.position.lat();
-				favoritelng= markersec.position.lng();
-				alert(favoritelat);
-				var xhttp= new XMLHttpRequest();
-				let nameoffavorite=document.getElementById('locationName').value;
-				xhttp.open("POST", "addfav", false);
-				xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-				xhttp.send("name=" +nameoffavorite+"&lat="+favoritelat+"&lng="+favoritelng);
-				console.log("FAVORITEHERE: "+ markersec.position.lat() + " " + markersec.position.lng());
-				location.reload();
-			} 
-			else {
-				alert("Could not process.");
-			}
-		});
-	}	
+				favoriteform.submit();
+			}); 
+		}	
+		return false;
+	}
+	
+	return true;
 }
 
 function remove(indexof,nameof){
 
-	alert(nameof);
+	//alert(nameof);
 	var xhttp= new XMLHttpRequest();
 	xhttp.open("POST", "remove", true);
 	xhttp.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -409,3 +417,5 @@ function testing()
 		
 		document.getElementById("fill").innerHTML=url;
 }
+
+testing();

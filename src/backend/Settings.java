@@ -4,7 +4,9 @@ package backend;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -34,61 +36,91 @@ public class Settings extends HttpServlet {
 	 * @see HttpServlet#service(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		Statement st = null;
-		ResultSet rs = null;
-		
-		//Check if the user is logged in. Only allow access to settings if there is 
-		//a user logged in.
-		String errorMessage = "";
-		HttpSession session = request.getSession();
-		if(session.getAttribute("name") == null) {
-			errorMessage+= "You must be logged in to change your settings.";
-			//Send them back to whatever page.
-			//TODO: What page should we send the user back if they are not logged in?
-			RequestDispatcher rd = getServletContext().getRequestDispatcher("/HomePage.jsp");
-			try {
-				rd.forward(request, response);
-			}
-			catch(IOException e) {
-				e.printStackTrace();
-			}
-			catch(ServletException e) {
-				e.printStackTrace();
-			}
-			return;
-		}
-		
 		//Verify New Password Change.
 		//New password cannot be old password and make the user confirm twice for the new password. 
-		
-		String successMessage = "";
-		String originalPassword = request.getParameter("orinigalPassword");
+		HttpSession h = request.getSession();
+		String username=(String)h.getAttribute("username");
+		String currUsername = request.getParameter("currUsername");
+		String originalPassword = request.getParameter("originalPassword");
 		String newPassword = request.getParameter("newPassword");
 		String confirmPassword = request.getParameter("confirmPassword");
-		if (!newPassword.contentEquals(confirmPassword)) {
-			errorMessage+="New password does not match.";
-		}
-		else if(originalPassword.contentEquals(confirmPassword)) {
-			errorMessage+="Please select a new password.";
-		}
-		else {
-			successMessage+="Success! Your password has been changed.";
-		}
-		//Update the new password in database
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(CREDENTIALS_STRING);
-			st = connection.createStatement();
-			st.executeUpdate("Update users SET password ='"	+ confirmPassword + "'" + "WHERE username='" + session.getAttribute("name") + "'");
-			
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
+		System.out.println(username + " " + currUsername + " " + originalPassword + " " + newPassword + " " + confirmPassword);
 
+		Connection conn = null;
+		PreparedStatement  st= null;
+		ResultSet rs= null; 
 		
-		
+		try {
+			if (!username.equals(currUsername)) {
+				System.out.println("Incorrect Username");
+				request.setAttribute("error", "Incorrect Username or Password");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Settings.jsp");
+				rd.forward(request, response);
+			}
+			if (newPassword == null || newPassword.isEmpty()) {
+				System.out.println("New Password empty");
+				request.setAttribute("error", "New Password cannot be empty");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Settings.jsp");
+				rd.forward(request, response);
+			}
+			if (!newPassword.equals(confirmPassword)) {
+				System.out.println("New and confirm Password Mismatch");
+				request.setAttribute("error", "New Password and Confirmed Password Mismatch");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Settings.jsp");
+				rd.forward(request, response);
+			}
+			Class.forName("com.mysql.jdbc.Driver");
+			conn = DriverManager.getConnection("jdbc:mysql://google/FareChecker?cloudSqlInstance=farechecker-258720:us-west1:finalproject&socketFactory=com.google.cloud.sql.mysql.SocketFactory&useSSL=false&user=hassib&password=rangeen");
+			st = conn.prepareStatement("SELECT * FROM logins WHERE username=? AND password=?");
+			st.setString(1, username);
+			st.setString(2, originalPassword);
+			rs = st.executeQuery();
+			if (rs.next()) {
+				st = conn.prepareStatement("UPDATE logins SET password=? WHERE username=?");
+				st.setString(1, newPassword);
+				st.setString(2, username);
+				boolean status = st.execute();
+				if (status) {
+					System.out.println("Success");
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/profile.jsp");
+					rd.forward(request, response);
+				} else {
+					System.out.println("Database error");
+					request.setAttribute("error", "Error Updating Database");
+					RequestDispatcher rd = getServletContext().getRequestDispatcher("/Settings.jsp");
+					rd.forward(request, response);
+				}
+			}
+			else {
+				System.out.println("Incorrect Password");
+				request.setAttribute("error", "Incorrect Username or Password");
+				RequestDispatcher rd = getServletContext().getRequestDispatcher("/Settings.jsp");
+				rd.forward(request, response);
+				//return;
+			}
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		} finally {
+			if (conn != null) {
+				try {
+					conn.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			} 
+		}
 		
 	}
 

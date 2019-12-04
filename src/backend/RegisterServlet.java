@@ -66,6 +66,10 @@ public class RegisterServlet extends HttpServlet {
 					System.out.println("Passwords don't match");
 	
 				}
+				else if (password == null || password.isEmpty()) {
+					out.write("Password cannot be empty");
+					System.out.println("Empty Password");
+				}
 				else//sucessful register so insert into database
 				{
 					st= conn.prepareStatement("INSERT INTO logins (username, password) VALUES (?,?)");
