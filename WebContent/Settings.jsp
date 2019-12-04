@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Cpmpatible" content="IE-edge">
-	<meta name="viewport" content="width - device-width, initial-scale=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>Settings</title>
 	
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">

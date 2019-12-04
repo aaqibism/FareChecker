@@ -1,25 +1,25 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-        <%@ page import="backend.getLocation"%> 
-    
+<%@ page import="backend.getLocation"%>     
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta http-equiv="X-UA-Cpmpatible" content="IE-edge">
-<meta name="viewport" content="width - device-width, initial-scale=1">
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
-<link rel="stylesheet" type="text/css" href="styles.css">
-<title>Profile</title>
-<% //meant to help getLocation.java figure out who is currently logged in
-	HttpSession h= request.getSession();
-	String username=(String)h.getAttribute("username");
-	if (username == null || username.isEmpty()) {
-		response.sendRedirect("homepage.jsp");
-	}
-	getLocation mine= new getLocation(username);
-	mine.getlocations();
-%>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Cpmpatible" content="IE-edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/css/bootstrap.min.css" integrity="sha384-SI27wrMjH3ZZ89r4o+fGIJtnzkAnFs3E4qz9DIYioCQ5l9Rd/7UAa8DHcaL8jkWt" crossorigin="anonymous">
+	<link href="https://fonts.googleapis.com/css?family=Barlow:500|Raleway&display=swap" rel="stylesheet">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+	<title>Profile</title>
+	<% //meant to help getLocation.java figure out who is currently logged in
+		HttpSession h= request.getSession();
+		String username=(String)h.getAttribute("username");
+		if (username == null || username.isEmpty()) {
+			response.sendRedirect("homepage.jsp");
+		}
+		getLocation mine= new getLocation(username);
+		mine.getlocations();
+	%>
 </head>
 <body>
 
@@ -133,11 +133,6 @@
 		<input type="hidden" id="endinglat"value="">
 		<input type="hidden" id="endinglng"value="">
 	</form>
-
-
-
-
-
 
 <div id="wrapper">
 		<div id="map"></div>
