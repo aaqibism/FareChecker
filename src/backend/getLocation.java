@@ -23,11 +23,12 @@ import com.google.gson.Gson;
 public class getLocation {
 	private static final long serialVersionUID = 1L;
 	public Vector<location> holder;	
+	String usern;
 	
-    public getLocation() {
-    	holder=new Vector<location>();
+    public getLocation(String usernam) {
+    	this.holder=new Vector<location>();
     	
-    	
+    	this.usern=usernam;
     	
     	
         // TODO Auto-generated constructor stub
@@ -36,7 +37,7 @@ public class getLocation {
 	public boolean getlocations() {
 		// TODO Auto-generated method stub
 		
-		String usern="hassib"; //(String)h.getAttribute("username");//must be done in login and register servlet*********
+		//String usern="hassib"; //(String)h.getAttribute("username");//must be done in login and register servlet*********
 		Connection conn = null;
 		PreparedStatement  st= null;
 		ResultSet rs= null; 
