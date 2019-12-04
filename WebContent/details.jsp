@@ -22,6 +22,7 @@
 			mine.getlocations();
 		}
 	%>
+
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
@@ -68,12 +69,11 @@
 		
 		<table class="table table-bordered">
 			<script>
-
 			</script>
 			<tbody id="comparison">
 				<tr>
-			      <td>$18.35</td>
-			      <td>$17.25</td>
+			      <td id="uber"></td>
+			      <td id="lyft"></td>
 			    </tr>
 			</tbody>
 		</table>
@@ -175,19 +175,17 @@
 <script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-<script type='text/javascript' src="profile.js"></script>
+<script type='text/javascript' src="details.js"></script>
 <script>
-let term=sessionStorage.getItem("endinglat");
-let terms=sessionStorage.getItem("endinglng");
-
+var term=sessionStorage.getItem("endinglat");
+var terms=sessionStorage.getItem("endinglng");
 console.log("Ending lat: "+ term);
 console.log("Ending lng: "+ terms);
-
-let hi = sessionStorage.getItem("startinglat");
-let his = sessionStorage.getItem("startinglng");
-
+var hi = sessionStorage.getItem("startinglat");
+var his = sessionStorage.getItem("startinglng");
 console.log("Starting lat: "+ hi);
 console.log("Starting lng: "+ his);    
+table();
 </script>
 </body>
 </html>
