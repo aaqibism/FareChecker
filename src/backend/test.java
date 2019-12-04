@@ -1,28 +1,218 @@
 package backend;
+
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Random;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
+import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
-public class test {
-	public static void main (String[] args)
-	{
-		Document doc;
-		try {
-			//doc = Jsoup.connect("https://ride.guru/estimate/3771%20Mcclintock%20Ave,%20Los%20Angeles,%20California%2090089,%20United%20States/Los%20Angeles%20International%20Airport%20(LAX),%201%20World%20Way,%20Los%20Angeles,%20California%2090045,%20United%20States#fare-comparison").get();
-			doc = Jsoup.connect("http://303.itpwebdev.com/~aaqibism/student_page.html").get();
-			Element body = doc.body();
-			System.out.println(doc.getElementsByTag("h1"));
-			//Elements h4 = body.select("h4[class='fare']");
-			//System.out.println(h4);
-			//System.out.println(body.getElementsByClass("shrink"));
-			
-			//System.out.println(body.getElementById("title"));
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+import com.google.gson.Gson;
+
+/**
+ * Servlet implementation class test
+ */
+@WebServlet("/test")
+public class test extends HttpServlet {
+	private static final long serialVersionUID = 1L;
+    public Gson gson = new Gson();
+    public ArrayList<String> s;
+
+    /**
+     * @see HttpServlet#HttpServlet()
+     */
+    public test() {
+        super();
+        // TODO Auto-generated constructor stub
+    }
+
+	/**
+	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
+	 */
+	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stub
+		response.getWriter().append("Served at: ").append(request.getContextPath());
 	}
+
+	/**
+	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
+	 */
+	public double degreesToRadians(double num)
+	{
+		
+		  return ((num * Math.PI) / 180);
+
+	}
+	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		// TODO Auto-generated method stubreq
+		
+		s=new ArrayList<String>();
+		double startlat= Double.parseDouble(request.getParameter("startinglat"));
+		double enlatitude=  Double.parseDouble(request.getParameter("endinglat"));
+			double startlng=  Double.parseDouble(request.getParameter("endinglng"));
+			double endlng=  Double.parseDouble(request.getParameter("startinglng"));
+		
+		int  earthRadiusKm = 6371;
+
+		 double  latitude = degreesToRadians(enlatitude-startlat);
+		double   longitude = degreesToRadians(endlng-startlng);
+
+		double  latRadians = degreesToRadians(startlat);
+		double  latRadians2 = degreesToRadians(enlatitude);
+
+		double   a = Math.sin(latitude/2) * Math.sin(latitude/2) +
+		          Math.sin(longitude/2) * Math.sin(longitude/2) * Math.cos(latRadians) * Math.cos(latRadians2); 
+		double   c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+		  double dist= earthRadiusKm *c;
+		  double miles= dist/ 1.609;
+		  System.out.println(dist);
+		  System.out.println(miles);
+		  if(miles<=3)
+		  {
+			  double lprice=4.0 + new Random().nextDouble() * (7.0 - 4.0);;
+			  double uprice=4.0 + new Random().nextDouble() * (7.0 - 4.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else if(miles>3 && miles<=5)
+		  {
+			  double lprice=5.0 + new Random().nextDouble() * (10.0 - 5.0);;
+			  double uprice=5.0 + new Random().nextDouble() * (10.0 - 5.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else if(miles>5 && miles<=10)
+		  {
+			  double lprice=9.0 + new Random().nextDouble() * (14.0 - 9.0);;
+			  double uprice=9.0 + new Random().nextDouble() * (14.0 - 9.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else if(miles>10 && miles<=20)
+		  {
+			  double lprice=13.0 + new Random().nextDouble() * (23.0 - 13.0);;
+			  double uprice=13.0 + new Random().nextDouble() * (23.0 - 13.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else if(miles>20 && miles<=30)
+		  {
+			  double lprice=17.0 + new Random().nextDouble() * (25.0 - 17.0);;
+			  double uprice=17.0 + new Random().nextDouble() * (25.0 - 17.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else if(miles>30 && miles<=40)
+		  {
+			  double lprice=20.0 + new Random().nextDouble() * (30.0 - 20.0);;
+			  double uprice=20.0 + new Random().nextDouble() * (30.0 - 20.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  else 
+		  {
+			  double lprice=30.0 + new Random().nextDouble() * (70.0 - 30.0);;
+			  double uprice=30.0 + new Random().nextDouble() * (70.0 - 30.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+
 }
