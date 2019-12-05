@@ -213,66 +213,78 @@ document.querySelector("#enterfavorite").onsubmit = function (event) {
 	
 	
 }*/
-document.querySelector("#directions").onsubmit = function (event) {
-	//event.preventDefault(); //REMOVE THIS TO SUBMIT
-	let secondadd = document.getElementById('startAdd').value;
-	let address = document.getElementById('endAdd').value;
-	console.log(address);
-	console.log(secondadd);
-	if( secondadd.length > 0) {
-		geocoder.geocode( { 'address': secondadd}, function(results, status) {
-			if (status == 'OK') {
-				let markersec = new google.maps.Marker({
-					map: mymap,
-					position: results[0].geometry.location
-				});
-				mymap.panTo(markersec.position);
-				document.querySelector("#startlat").value = markersec.position.lat();
-				document.querySelector("#startlng").value = markersec.position.lng();
-				console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
-			} 
-		});
-	} else {
-		document.querySelector("#startlat").value = startinglat;
-		document.querySelector("#startlng").value = startinglng;
-		console.log("STARTING: "+ startinglat + " " + startinglng);
-	}
 
-	if (address.length > 0) {
-		if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0") {
-			$(".danger1").css("display", "block");
+let submit = false;
+let submit1 = false;
+document.querySelector("#directions").onsubmit = function (event) {
+//function submitForm() {
+	//if (!submit && submit1) {
+		
+		let secondadd = document.getElementById('startAdd').value;
+		let address = document.getElementById('endAdd').value;
+		console.log(address);
+		console.log(secondadd);
+		if( secondadd.length > 0) {
+			geocoder.geocode( { 'address': secondadd}, function(results, status) {
+				if (status == 'OK') {
+					//submit = true;
+					let markersec = new google.maps.Marker({
+						map: mymap,
+						position: results[0].geometry.location
+					});
+					mymap.panTo(markersec.position);
+					document.querySelector("#startlat").value = markersec.position.lat();
+					document.querySelector("#startlng").value = markersec.position.lng();
+					console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
+					sessionStorage.setItem("startinglat", markersec.position.lat());
+					sessionStorage.setItem("startinglng",markersec.position.lng());
+				} 
+			});
+		} else {
+			//submit = true;
+			document.querySelector("#startlat").value = startinglat;
+			document.querySelector("#startlng").value = startinglng;
+			console.log("STARTING: "+ startinglat + " " + startinglng);
+			sessionStorage.setItem("startinglat", startinglat);
+			sessionStorage.setItem("startinglng", startlng);
+		}
+	
+		if (address.length > 0) {
+			if (document.querySelector("#startlat").value == "0" && document.querySelector("#startlng").value == "0") {
+				$(".danger1").css("display", "block");
+				return false;
+			}
+			geocoder.geocode( { 'address': address}, function(results, status) {
+				if (status == 'OK') {
+					//submit1 = true;
+					let marker = new google.maps.Marker({
+						map:mymap,
+						position: results[0].geometry.location
+					});
+					mymap.panTo(marker.position);
+					document.querySelector("#endinglat").value = marker.position.lat();
+					document.querySelector("#endinglng").value = marker.position.lng();
+					console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
+	
+					sessionStorage.setItem("endinglat",marker.position.lat() );
+					sessionStorage.setItem("endinglng",marker.position.lng() );
+	
+					console.log("Ending: " + document.querySelector("#endinglat").value + " " +document.querySelector("#endinglng").value);
+				} 
+			});
+			//directions.submit();
+		} else {
+			$(".label1").css("margin-top", "5px");
+			$(".danger").css("display", "block");
 			return false;
 		}
-		geocoder.geocode( { 'address': address}, function(results, status) {
-			if (status == 'OK') {
-				let marker = new google.maps.Marker({
-					map:mymap,
-					position: results[0].geometry.location
-				});
-				mymap.panTo(marker.position);
-				document.querySelector("#endinglat").value = marker.position.lat();
-				document.querySelector("#endinglng").value = marker.position.lng();
-				console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
-
-				sessionStorage.setItem("endinglat",marker.position.lat() );
-				sessionStorage.setItem("endinglng",marker.position.lng() );
-				sessionStorage.setItem("startinglat", startinglat );
-				sessionStorage.setItem("startinglng",startinglng );
-
-				console.log("Ending: " + document.querySelector("#endinglat").value + " " +document.querySelector("#endinglng").value);
-			} 
-		});
-	} else {
-		$(".label1").css("margin-top", "5px");
-		$(".danger").css("display", "block");
-		return false;
-	}
+		setTimeout(function () {
+	        directions.submit();
+	    }, 2000);
+		//return false;
+	//}
+	//return true;
 }
-
-
-
-
-
 
 document.querySelector("#endAdd").onkeypress = function() {
 	if (document.querySelector(".danger").style.display == "block") {
@@ -326,7 +338,7 @@ $("#plus").click(function() {
 });
 
 var geo = false;
-
+if (document.querySelector("#favoriteform")) {
 document.querySelector("#favoriteform").onsubmit = function() {
 	if (!geo) {
 		let add= document.getElementById('locationAddress').value;
@@ -360,6 +372,8 @@ document.querySelector("#favoriteform").onsubmit = function() {
 	
 	return true;
 }
+}
+
 
 function remove(indexof,nameof){
 
@@ -377,6 +391,8 @@ function remove(indexof,nameof){
 
 function testing()
 {
+		if (size) {
+		
 		var i;
 		var index=-1;
 		console.log(size);
@@ -416,6 +432,6 @@ function testing()
 		console.log(url);
 		
 		document.getElementById("fill").innerHTML=url;
+		}
 }
 
-testing();

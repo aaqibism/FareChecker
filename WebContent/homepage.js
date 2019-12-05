@@ -130,6 +130,9 @@ document.querySelector("#directions").onsubmit = function (event) {
 		$(".danger").css("display", "block");
 		return false;
 	}
+	setTimeout(function () {
+        directions.submit();
+    }, 2000);
 }
 
 

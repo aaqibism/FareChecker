@@ -22,9 +22,15 @@
 			mine.getlocations();
 		}
 	%>
+<script type='text/javascript' src="config.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
+	crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
 
 </head>
-<body>
+<body onload=testing();>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
@@ -80,6 +86,8 @@
 	</div>
 	<% if(username != null && !username.isEmpty()) { %>
 	<div id="table">
+		<script type="text/javascript"></script>
+	<% if(username != null && !username.isEmpty()) { %>	
 		<table id="favorite" class="table">
 			<thead><tr><th width="100%">Favorites</th></tr></thead>	
 		</table>
@@ -96,7 +104,8 @@
 		<%int index=0; %>
 		
 		</table>
-		
+	<%} %>
+	<% if(username != null && !username.isEmpty()) { %>	
 			<table class="table table-hover">
 			<script>
 			var size=<%=mine.holder.size()%>;
@@ -105,7 +114,10 @@
 			
 			</script>
 			<%String html="";%>
+	<%} %>
+	<% if(username != null && !username.isEmpty()) { %>							
 				<tbody id="fill">
+
 				<%for(int i=0;i<mine.holder.size();i++){ %>
 				   <script>
 				   complete.push(<%=mine.holder.get(i).lat%>);
@@ -117,9 +129,13 @@
 				   <%} %>
 
 				</tbody>
+	<%} %>
 			</table>
 		</div>
 	</div>
+	<%} %>
+	
+	<% if(username != null && !username.isEmpty()) { %>		
 	
 	<div class="favorite">
 		<div id="plus">
@@ -168,16 +184,8 @@
 	<div id="wrapper">
 		<div id="map"></div>
 	</div>
-
-<script type='text/javascript' src="config.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
-	crossorigin="anonymous"></script>
-<script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-<script type='text/javascript' src="details.js"></script>
 <script type='text/javascript' src="profile.js"></script>
-
+<script type='text/javascript' src="details.js"></script>
 <script>
 var term=sessionStorage.getItem("endinglat");
 var terms=sessionStorage.getItem("endinglng");
