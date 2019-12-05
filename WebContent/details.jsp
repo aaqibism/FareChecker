@@ -119,19 +119,7 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>	
 <script type='text/javascript' src="profile.js"></script>
 <script type='text/javascript' src="details.js"></script>
-<script>
-var term=sessionStorage.getItem("endinglat");
-var terms=sessionStorage.getItem("endinglng");
-console.log("Ending lat: "+ term);
-console.log("Ending lng: "+ terms);
-var hi = sessionStorage.getItem("startinglat");
-var his = sessionStorage.getItem("startinglng");
-hi = 34.0195027;
-his = -118.28941230000001;
-term = 33.9415889;
-terms = -118.40852999999998;
-e.log("Starting lat: "+ hi);
-console.log("Starting lng: "+ his);    
+<script>   
 table();
 </script>
 </body>

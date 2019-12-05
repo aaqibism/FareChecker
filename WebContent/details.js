@@ -1,9 +1,10 @@
 function table()
 {
-	var endlat=sessionStorage.getItem("endinglat");
-	var endlng=sessionStorage.getItem("endinglng");
-	var startlat = sessionStorage.getItem("startinglat");
-	var startlng = sessionStorage.getItem("startinglng");   
+	var endlat=33.9415889;//sessionStorage.getItem("endinglat");
+	var endlng=-118.40852999999998;//sessionStorage.getItem("endinglng");
+	var startlat = 34.0195027;//sessionStorage.getItem("startinglat");
+	var startlng =  -118.28941230000001;//sessionStorage.getItem("startinglng"); 
+
 	var xhr = new XMLHttpRequest();
 	let origins=startlat+','+startlng+'&destinations='+endlat+'%2C'+endlng;
 	let url= "https://maps.googleapis.com/maps/api/distancematrix/json?units=imperial&origins="+origins+'&key='+API_KEY;
