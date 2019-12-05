@@ -57,6 +57,10 @@ public class test extends HttpServlet {
 		{
 			dist=dist.replace(" mi","");
 		}
+		while(dist.contains(","))
+		{
+			dist=dist.replace(",","");
+		}
 		while(dist.contains("\""))
 		{
 			dist=dist.replace("\"","");
@@ -145,10 +149,10 @@ public class test extends HttpServlet {
 			  
 			  
 		  }
-		  else if(miles>10 && miles<=20)
+		  else if(miles>10 && miles<=15)
 		  {
-			  double lprice=13.0 + new Random().nextDouble() * (23.0 - 13.0);;
-			  double uprice=13.0 + new Random().nextDouble() * (23.0 - 13.0);;
+			  double lprice=13.0 + new Random().nextDouble() * (18.0 - 13.0);;
+			  double uprice=13.0 + new Random().nextDouble() * (18.0 - 13.0);;
 			  String lstring = String.format("%.2f", lprice);
 			  String ustring = String.format("%.2f", uprice);
 			  s.add(lstring);
@@ -164,10 +168,30 @@ public class test extends HttpServlet {
 			  
 			  
 		  }
+		  else if(miles>15 && miles<=20)
+		  {
+			  double lprice=17.0 + new Random().nextDouble() * (27.0 - 17.0);;
+			  double uprice=17.0 + new Random().nextDouble() * (27.0 - 17.0);;
+			  String lstring = String.format("%.2f", lprice);
+			  String ustring = String.format("%.2f", uprice);
+			  s.add(lstring);
+			  s.add(ustring);
+			  String userJsonString = this.gson.toJson(s);
+			  PrintWriter out = response.getWriter();
+		      response.setContentType("application/json");
+		      response.setCharacterEncoding("UTF-8");
+		      out.print(userJsonString);
+		      out.flush();
+		        
+			  
+			  
+			  
+		  }
+		  
 		  else if(miles>20 && miles<=30)
 		  {
-			  double lprice=17.0 + new Random().nextDouble() * (25.0 - 17.0);;
-			  double uprice=17.0 + new Random().nextDouble() * (25.0 - 17.0);;
+			  double lprice=25.0 + new Random().nextDouble() * (40.0 - 25.0);;
+			  double uprice=25.0 + new Random().nextDouble() * (40.0 - 25.0);;
 			  String lstring = String.format("%.2f", lprice);
 			  String ustring = String.format("%.2f", uprice);
 			  s.add(lstring);
@@ -185,8 +209,8 @@ public class test extends HttpServlet {
 		  }
 		  else if(miles>30 && miles<=40)
 		  {
-			  double lprice=20.0 + new Random().nextDouble() * (30.0 - 20.0);;
-			  double uprice=20.0 + new Random().nextDouble() * (30.0 - 20.0);;
+			  double lprice=30.0 + new Random().nextDouble() * (50.0 - 30.0);;
+			  double uprice=30.0 + new Random().nextDouble() * (50.0 - 30.0);;
 			  String lstring = String.format("%.2f", lprice);
 			  String ustring = String.format("%.2f", uprice);
 			  s.add(lstring);
@@ -204,8 +228,8 @@ public class test extends HttpServlet {
 		  }
 		  else 
 		  {
-			  double lprice=30.0 + new Random().nextDouble() * (70.0 - 30.0);;
-			  double uprice=30.0 + new Random().nextDouble() * (70.0 - 30.0);;
+			  double lprice=50.0 + new Random().nextDouble() * (100.0 - 50.0);;
+			  double uprice=50.0 + new Random().nextDouble() * (100.0 - 50.0);;
 			  String lstring = String.format("%.2f", lprice);
 			  String ustring = String.format("%.2f", uprice);
 			  s.add(lstring);

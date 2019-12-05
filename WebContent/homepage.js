@@ -77,7 +77,7 @@ function nolocation()
 
 //should get cord. of final destination based on user input for adrs 
 document.querySelector("#directions").onsubmit = function (event) {
-	//event.preventDefault(); //REMOVE THIS TO SUBMIT
+	event.preventDefault(); //REMOVE THIS TO SUBMIT
 	let secondadd = document.getElementById('startAdd').value;
 	let address = document.getElementById('endAdd').value;
 	console.log(address);
@@ -94,12 +94,16 @@ document.querySelector("#directions").onsubmit = function (event) {
 				document.querySelector("#startlat").value = markersec.position.lat();
 				document.querySelector("#startlng").value = markersec.position.lng();
 				console.log("STARTING: "+ markersec.position.lat() + " " + markersec.position.lng());
+				sessionStorage.setItem("startinglat", startinglat );
+				sessionStorage.setItem("startinglng",startinglng );
 			} 
 		});
 	} else {
 		document.querySelector("#startlat").value = startinglat;
 		document.querySelector("#startlng").value = startinglng;
 		console.log("STARTING: "+ startinglat + " " + startinglng);
+		sessionStorage.setItem("startinglat", startinglat );
+		sessionStorage.setItem("startinglng",startinglng );
 	}
 
 	if (address.length > 0) {
@@ -119,8 +123,7 @@ document.querySelector("#directions").onsubmit = function (event) {
 				document.querySelector("#endinglng").value = marker.position.lng();
 				sessionStorage.setItem("endinglat",marker.position.lat() );
 				sessionStorage.setItem("endinglng",marker.position.lng() );
-				sessionStorage.setItem("startinglat", startinglat );
-				sessionStorage.setItem("startinglng",startinglng );
+				
 
 				console.log("Ending: " + marker.position.lat() + " " + marker.position.lng());
 			} 

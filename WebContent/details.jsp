@@ -22,15 +22,8 @@
 			mine.getlocations();
 		}
 	%>
-<script type='text/javascript' src="config.js"></script>
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
-	crossorigin="anonymous"></script>
-<script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>
-
 </head>
-<body onload=testing();>
+<body>
 	<nav class="navbar navbar-expand-lg bg-dark navbar-dark nav">
 		<a class="navbar-brand" href="profile.jsp">FareChecker</a>
 		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span>
@@ -84,73 +77,7 @@
 			</tbody>
 		</table>
 	</div>
-	<% if(username != null && !username.isEmpty()) { %>
-	<div id="table">
-		<script type="text/javascript"></script>
-	<% if(username != null && !username.isEmpty()) { %>	
-		<table id="favorite" class="table">
-			<thead><tr><th width="100%">Favorites</th></tr></thead>	
-		</table>
-		<div id="body"> 
-		<table class="table table-hover">
-		<thead>
-			<tr>
-				<th width="10%" scope="col">#</th>
-				<th width="15%" scope="col">Name</th>
-				<th width="45%" scope="col">Address</th>
-				<th width="25%" scope="col">Delete</th>
-    		</tr>
-		</thead>
-		<%int index=0; %>
-		
-		</table>
-	<%} %>
-	<% if(username != null && !username.isEmpty()) { %>	
-			<table class="table table-hover">
-			<script>
-			var size=<%=mine.holder.size()%>;
-			var complete=[];
-			var url="";
-			
-			</script>
-			<%String html="";%>
-	<%} %>
-	<% if(username != null && !username.isEmpty()) { %>							
-				<tbody id="fill">
-
-				<%for(int i=0;i<mine.holder.size();i++){ %>
-				   <script>
-				   complete.push(<%=mine.holder.get(i).lat%>);
-				   complete.push(<%=mine.holder.get(i).lng%>);
-				   var indexx=<%=i%>;
-				   var nameee='<%=mine.holder.get(i).name%>';
-				   url+='<tr id="hello'+indexx+'"><th width="10%" scope="row">'+(indexx+1)+'</th> <td width="15%">'+nameee+'</td> <td width="45%">'+' replaceme '+'</td> <td width="25%"><button class="btn btn-danger" onclick="remove(' +indexx +','+"'"+nameee+"'"+');">Delete</button></td> </tr>';
-				   </script>
-				   <%} %>
-
-				</tbody>
-	<%} %>
-			</table>
-		</div>
-	</div>
-	<%} %>
 	
-	<% if(username != null && !username.isEmpty()) { %>		
-	
-	<div class="favorite">
-		<div id="plus">
-			<i class="fas fa-plus"></i>
-			<h6>Add a New Favorite<h6>
-		</div>
-		<form name="myform" id="favoriteform" action="profile.jsp" method="post">
-			<input type=text id="locationName" class="form-control" placeholder="Name of Location">
-			<input type=text id="locationAddress" class="form-control" placeholder="Address">
-			<input id = "Buttonfav" type="submit" class = "btn btn-primary" name="registerSubmit" value="Submit" />
-			
-		</form>
-	</div>
-	
-	<% } %>
 	<form id="directions" action="details.jsp" method="get">
 		<div class="test">
 			<div class="cntr">
@@ -184,6 +111,12 @@
 	<div id="wrapper">
 		<div id="map"></div>
 	</div>
+<script type='text/javascript' src="config.js"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" 
+	crossorigin="anonymous"></script>
+<script src="https://use.fontawesome.com/releases/v5.11.2/js/all.js" data-auto-replace-svg="nest"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.0/js/bootstrap.min.js" integrity="sha384-3qaqj0lc6sV/qpzrc1N5DC6i1VRn/HyX4qdPaiEFbn54VjQBEU341pvjz7Dv3n6P" crossorigin="anonymous"></script>	
 <script type='text/javascript' src="profile.js"></script>
 <script type='text/javascript' src="details.js"></script>
 <script>
@@ -193,7 +126,11 @@ console.log("Ending lat: "+ term);
 console.log("Ending lng: "+ terms);
 var hi = sessionStorage.getItem("startinglat");
 var his = sessionStorage.getItem("startinglng");
-console.log("Starting lat: "+ hi);
+hi = 34.0195027;
+his = -118.28941230000001;
+term = 33.9415889;
+terms = -118.40852999999998;
+e.log("Starting lat: "+ hi);
 console.log("Starting lng: "+ his);    
 table();
 </script>
