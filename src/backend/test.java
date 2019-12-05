@@ -51,7 +51,24 @@ public class test extends HttpServlet {
 		// TODO Auto-generated method stubreq
 		
 		s=new ArrayList<String>();
-		double startlat= Double.parseDouble(request.getParameter("startinglat"));
+		String dist= request.getParameter("distance");
+		System.out.println(dist);
+		if(dist.contains(" mi"))
+		{
+			dist=dist.replace(" mi","");
+		}
+		while(dist.contains("\""))
+		{
+			dist=dist.replace("\"","");
+		}
+		
+		if(!dist.contains("."))
+		{
+			dist+=".0";
+		}
+		System.out.println(dist);
+		double miles= Double.parseDouble(dist);
+		/*(double startlat= Double.parseDouble(request.getParameter("startinglat"));
 		double enlatitude=  Double.parseDouble(request.getParameter("endinglat"));
 			double startlng=  Double.parseDouble(request.getParameter("endinglng"));
 			double endlng=  Double.parseDouble(request.getParameter("startinglng"));
@@ -70,7 +87,7 @@ public class test extends HttpServlet {
 		  double dist= earthRadiusKm *c;
 		  double miles= dist/ 1.609;
 		  System.out.println(dist);
-		  System.out.println(miles);
+		  System.out.println(miles);*/
 		  if(miles<=3)
 		  {
 			  double lprice=4.0 + new Random().nextDouble() * (7.0 - 4.0);;
